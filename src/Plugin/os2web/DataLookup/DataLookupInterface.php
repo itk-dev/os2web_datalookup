@@ -15,4 +15,10 @@ use Drupal\Core\Plugin\PluginFormInterface;
  * @ingroup plugin_api
  */
 interface DataLookupInterface extends PluginInspectionInterface, PluginFormInterface, ConfigurableInterface {
+
+  /**
+   * Get plugin status.
+   */
+  public function getStatus();
+
 }

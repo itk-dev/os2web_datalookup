@@ -61,4 +61,11 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
     // Making validate optional.
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatus() {
+    return 'N/A';
+  }
+
 }

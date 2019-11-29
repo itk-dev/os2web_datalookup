@@ -48,8 +48,8 @@ class DataLookupRoutes implements ContainerInjectionInterface {
     $pluginDefinitions = $this->manager->getDefinitions();
     $routes = [];
     foreach ($pluginDefinitions as $id => $plugin) {
-      $routes["os2web_nemlogin.auth_provider.$id"] = new Route(
-        "admin/config/system/os2web-datalookup/" . str_replace('_', '-', $plugin['id']), [
+      $routes["os2web_datalookup.$id"] = new Route(
+        "/admin/config/system/os2web-datalookup/" . str_replace('_', '-', $plugin['id']), [
           '_form' => '\Drupal\os2web_datalookup\Form\DataLookupPluginSettingsForm',
           '_title' => t("Configure :label", [':label' => $plugin['label']->__toString()])->__toString(),
           '_plugin_id' => $id,

@@ -33,7 +33,7 @@ class DataLookupPluginSettingsForm extends PluginSettingsFormBase {
    * {@inheritdoc}
    */
   public static function getConfigName() {
-    return 'os2web_datalookup.settings';
+    return 'os2web_datalookup';
   }
 
 }
