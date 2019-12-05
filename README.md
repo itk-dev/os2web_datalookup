@@ -32,3 +32,10 @@ See [OS2Web code review policy](https://github.com/OS2Web/docs#code-review)
 
 ### Git name convention
 See [OS2Web git name convention](https://github.com/OS2Web/docs#git-guideline)
+
+### Using services in other modules
+
+```
+\Drupal::service('plugin.manager.os2web_datalookup')->createInstance('serviceplatformen_cvr')->getLegalUnit('[CVR number]')
+\Drupal::service('plugin.manager.os2web_datalookup')->createInstance('serviceplatformen_cpr')->cprBasicInformation('[CPR number]'))
+```
