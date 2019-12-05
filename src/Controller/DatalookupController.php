@@ -5,7 +5,6 @@ namespace Drupal\os2web_datalookup\Controller;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
-use Drupal\os2web_datalookup\Form\DataLookupPluginSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,9 +52,7 @@ class DatalookupController extends ControllerBase {
 
     $rows = [];
     foreach ($this->manager->getDefinitions() as $id => $plugin_definition) {
-      $configuration = $this->config(DataLookupPluginSettingsForm::getConfigName() . '.' . $id)->get();
-      /** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupInterface $plugin */
-      $plugin = $this->manager->createInstance($id, $configuration);
+      $plugin = $this->manager->createInstance($id);
       $status = $plugin->getStatus();
       $rows[$id] = [
         'title' => $plugin_definition['label'],
