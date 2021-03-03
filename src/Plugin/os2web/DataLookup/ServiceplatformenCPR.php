@@ -132,12 +132,13 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
         'status' => $result['status'],
         'name' => isset($result['adresseringsnavn']) ? $result['adresseringsnavn'] : '',
         'road' => isset($result['vejadresseringsnavn']) ? $result['vejadresseringsnavn'] : '',
-        'road_no' => isset($result['husnummer']) ? $result['husnummer'] : '',
+        'road_no' => isset($result['husnummer']) ? ltrim($result['husnummer'], '0') : '',
         'floor' => isset($result['etage']) ? $result['etage'] : '',
         'door' => isset($result['sidedoer']) ? $result['sidedoer'] : '',
         'zipcode' => isset($result['postnummer']) ? $result['postnummer'] : '',
         'city' => isset($result['postdistrikt']) ? $result['postdistrikt'] : '',
         'coname' => isset($result['conavn']) ? $result['conavn'] : '',
+        'kommunekode' => isset($result['kommunekode']) ? $result['kommunekode'] : '',
       ];
     }
     else {
