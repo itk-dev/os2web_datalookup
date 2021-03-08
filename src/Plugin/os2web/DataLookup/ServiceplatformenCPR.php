@@ -134,7 +134,7 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
         'road' => isset($result['vejadresseringsnavn']) ? $result['vejadresseringsnavn'] : '',
         'road_no' => isset($result['husnummer']) ? ltrim($result['husnummer'], '0') : '',
         'floor' => isset($result['etage']) ? $result['etage'] : '',
-        'door' => isset($result['sidedoer']) ? $result['sidedoer'] : '',
+        'door' => isset($result['sidedoer']) ? ltrim($result['sidedoer'], '0')  : '',
         'zipcode' => isset($result['postnummer']) ? $result['postnummer'] : '',
         'city' => isset($result['postdistrikt']) ? $result['postdistrikt'] : '',
         'coname' => isset($result['conavn']) ? $result['conavn'] : '',
