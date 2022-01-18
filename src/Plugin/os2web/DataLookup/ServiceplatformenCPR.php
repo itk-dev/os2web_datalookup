@@ -139,6 +139,7 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
         'city' => isset($result['postdistrikt']) ? $result['postdistrikt'] : '',
         'coname' => isset($result['conavn']) ? $result['conavn'] : '',
         'kommunekode' => isset($result['kommunekode']) ? $result['kommunekode'] : '',
+        'name_address_protected' => isset($result['navneOgAdressebeskyttelse']) ? $result['navneOgAdressebeskyttelse'] : '',
       ];
     }
     else {
