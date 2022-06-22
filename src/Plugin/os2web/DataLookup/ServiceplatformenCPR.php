@@ -130,6 +130,7 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
     if ($result['status']) {
       return [
         'status' => $result['status'],
+        'cpr' => $cpr,
         'name' => isset($result['adresseringsnavn']) ? $result['adresseringsnavn'] : '',
         'road' => isset($result['vejadresseringsnavn']) ? $result['vejadresseringsnavn'] : '',
         'road_no' => isset($result['husnummer']) ? ltrim($result['husnummer'], '0') : '',
