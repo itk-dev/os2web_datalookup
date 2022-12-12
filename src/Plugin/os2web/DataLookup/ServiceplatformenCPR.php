@@ -95,6 +95,8 @@ class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCP
    *   [error] => Descriptive text shown when CPR doesn't validate
    */
   public function cprBasicInformation($cpr) {
+    \Drupal::logger('os2web_datalookup')->warning('"Serviceplatformen CPR (SF6008)" is obsolete and will be phased out. Please switch to "Serviceplatformen CPR - extended (SF1520)" as soon as possible');
+
     $request = $this->prepareRequest();
     $request['PNR'] = str_replace('-', '', $cpr);
     return $this->query('callCPRBasicInformationService', $request);
@@ -128,6 +130,8 @@ class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCP
    *   [error] => Descriptive text if something goes wrong
    */
   public function getAddress($cpr) {
+    \Drupal::logger('os2web_datalookup')->notice('Calling \'getAddress()\' directly is deprecated, use DataLookupCPRInterface::lookup() method.');
+
     $result = $this->cprBasicInformation($cpr);
 
     // If all goes well we return address array.

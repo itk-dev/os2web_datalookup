@@ -100,7 +100,7 @@ class DataLookupManager extends DefaultPluginManager {
   }
 
   /**
-   * Returns groups of all existing Datalookup plugins.s
+   * Returns groups of all existing Datalookup plugins.
    *
    * @return array
    *   Array of groups, keyed by group_id.

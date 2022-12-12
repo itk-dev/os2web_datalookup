@@ -1,0 +1,12 @@
+<?php
+
+use Drupal\os2web_datalookup\Form\DataLookupPluginGroupSettingsForm;
+
+/**
+ * Setting "serviceplatformen_cpr_extended" as default CPR lookup plugin.
+ */
+function os2web_datalookup_update_9001() {
+  $config = \Drupal::service('config.factory')->getEditable(DataLookupPluginGroupSettingsForm::$configName);
+  $config->set("cpr_lookup.default_plugin", 'serviceplatformen_cpr_extended');
+  $config->save();
+}

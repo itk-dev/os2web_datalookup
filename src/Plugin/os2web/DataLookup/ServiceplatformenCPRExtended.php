@@ -16,13 +16,34 @@ use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
  *   group = "cpr_lookup"
  * )
  */
-class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupCPRInterface{
+class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupCPRInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return array_merge(parent::defaultConfiguration(), [
+      'test_mode_fixed_cpr' => '',
+    ]);
+  }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
+    $form['mode_fieldset']['test_mode_fixed_cpr'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Fixed test CPR'),
+      '#default_value' => $this->configuration['test_mode_fixed_cpr'],
+      '#description' => $this->t('Fixed CPR that will be used for all requests to the serviceplatformen instead of the provided CPR.'),
+      '#states' => [
+        // Hide the settings when the cancel notify checkbox is disabled.
+        'visible' => [
+          'input[name="mode_selector"]' => ['value' => 1],
+        ],
+      ],
+    ];
     $form['test_cpr'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Test CPR nr.'),
@@ -39,6 +60,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
     if (!empty($form_state->getValue('test_cpr'))) {
       $cpr = $form_state->getValue('test_cpr');
     }
+
     if (!empty($cpr)) {
       $cprResult = $this->lookup($cpr);
       $response = (array) $cprResult;
@@ -54,6 +76,14 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
    * @inheritDoc
    */
   public function lookup($cpr) {
+    if ($this->configuration['mode_selector'] == 1 && $this->configuration['test_mode_fixed_cpr']) {
+      $cpr = $this->configuration['test_mode_fixed_cpr'];
+      \Drupal::messenger()->addMessage(
+        $this->t("Test mode enabled, all CPR lookup requests are made against CPR: %cpr", ['%cpr' => $cpr]),
+        MessengerInterface::TYPE_STATUS
+      );
+    }
+
     $request = $this->prepareRequest();
     $request['PNR'] = str_replace('-', '', $cpr);
 
@@ -63,6 +93,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
     // If all goes well we return address array.
     if ($result['status']) {
       $cprResult->setSuccessful();
+      $cprResult->setCpr($cpr);
       $persondata = $result['persondata'];
 
       if ($persondata->navn) {
