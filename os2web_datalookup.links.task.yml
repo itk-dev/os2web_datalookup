@@ -1,0 +1,7 @@
+os2web_datalookup.group_settings.all:
+  title: 'All'
+  route_name: os2web_datalookup.status_list
+  base_route: os2web_datalookup.status_list
+os2web_datalookup.group_settings:
+  deriver: 'Drupal\os2web_datalookup\Plugin\Derivative\GroupSettingsLocalTasks'
+  weight: 100

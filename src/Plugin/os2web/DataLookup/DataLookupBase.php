@@ -78,6 +78,13 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
   /**
    * {@inheritdoc}
    */
+  public function getGroup() {
+    return $this->pluginDefinition['group'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isReady() {
     return $this->isReady;
   }

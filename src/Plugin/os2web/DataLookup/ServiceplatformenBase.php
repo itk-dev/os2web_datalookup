@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Defines base plugin class for Serviceplatformen plugins.
  */
-abstract class ServiceplatformenBase extends DataLookupBase implements DataLookupInterface {
+abstract class ServiceplatformenBase extends DataLookupBase {
 
   /**
    * Plugin status string.

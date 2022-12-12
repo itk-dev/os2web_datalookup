@@ -5,16 +5,18 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
 
 /**
  * Defines a plugin for ServiceplatformenCPR.
  *
  * @DataLookup(
  *   id = "serviceplatformen_cpr",
- *   label = @Translation("Serviceplatformen CPR"),
+ *   label = @Translation("Serviceplatformen CPR (SF6008)"),
+ *   group = "cpr_lookup"
  * )
  */
-class ServiceplatformenCPR extends ServiceplatformenBase {
+class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCPRInterface{
 
   /**
    * {@inheritdoc}
@@ -117,6 +119,8 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
    * @cpr
    *  String - PSN (cpr) ([0-9]{6}\-[0-9]{4})
    *
+   * @deprecated use lookup() instead.
+   *
    * @return array
    *   [status] => TRUE/FALSE
    *   [address] => Roadname 10
@@ -148,4 +152,34 @@ class ServiceplatformenCPR extends ServiceplatformenBase {
     }
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function lookup($cpr) {
+    $result = $this->cprBasicInformation($cpr);
+
+    $cprResult = new CprLookupResult();
+
+    // If all goes well we return address array.
+    if ($result['status']) {
+      $cprResult->setSuccessful();
+      $cprResult->setCpr($cpr);
+      $cprResult->setName($result['adresseringsnavn'] ?? '');
+      $cprResult->setStreet($result['vejadresseringsnavn'] ?? '');
+      $cprResult->setHouseNr(isset($result['husnummer']) ? ltrim($result['husnummer'], '0') : '');
+      $cprResult->setFloor($result['etage'] ?? '');
+      $cprResult->setApartmentNr(isset($result['sidedoer']) ? ltrim($result['sidedoer'], '0') : '');
+      $cprResult->setPostalCode($result['postnummer'] ?? '');
+      $cprResult->setCity($result['postdistrikt'] ?? '');
+      $cprResult->setMunicipalityCode($result['kommunekode'] ?? '');
+      $cprResult->setCoName($result['conavn'] ?? '');
+      $cprResult->setNameAddressProtected($result['navneOgAdressebeskyttelse'] ?? '');
+    }
+    else {
+      $cprResult->setSuccessful(FALSE);
+      $cprResult->setErrorMessage($result['error']);
+    }
+
+    return $cprResult;
+  }
 }

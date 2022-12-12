@@ -47,6 +47,8 @@ class DataLookupRoutes implements ContainerInjectionInterface {
   public function routes() {
     $pluginDefinitions = $this->manager->getDefinitions();
     $routes = [];
+    $groups = [];
+
     foreach ($pluginDefinitions as $id => $plugin) {
       $routes["os2web_datalookup.$id"] = new Route(
         "/admin/config/system/os2web-datalookup/" . str_replace('_', '-', $plugin['id']), [
@@ -54,6 +56,23 @@ class DataLookupRoutes implements ContainerInjectionInterface {
           '_title' => t("Configure :label", [':label' => $plugin['label']->__toString()])->__toString(),
           '_plugin_id' => $id,
         ],
+        [
+          '_permission' => 'administer os2web datalookup configuration',
+        ]
+      );
+
+      // Collecting the groups.
+      $groups[$plugin['group']] = $plugin['group'];
+    }
+
+    // Creating routes for group configuration.
+    foreach ($groups as $group) {
+      $routes["os2web_datalookup.groups.$group"] = new Route(
+        "/admin/config/system/os2web-datalookup/" . str_replace('_', '-', $group), [
+        '_form' => '\Drupal\os2web_datalookup\Form\DataLookupPluginGroupSettingsForm',
+        '_title' => t("Configure group :label", [':label' => $group])->__toString(),
+        '_group_id' => $group,
+      ],
         [
           '_permission' => 'administer os2web datalookup configuration',
         ]

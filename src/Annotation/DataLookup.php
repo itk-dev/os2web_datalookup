@@ -44,4 +44,11 @@ class DataLookup extends Plugin {
    */
   public $description = '';
 
+  /**
+   * Group of the plugin lookup plugin.
+   *
+   * @var string
+   */
+  public $group = '';
+
 }
