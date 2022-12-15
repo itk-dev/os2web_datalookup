@@ -4,6 +4,18 @@ namespace Drupal\os2web_datalookup\LookupResult;
 
 class CprLookupResult {
 
+  const CPR = 'cpr';
+  const NAME = 'name';
+  const STREET = 'street';
+  const HOUSE_NR = 'houseNr';
+  const FLOOR = 'floor';
+  const APARTMENT_NR = 'apartmentNr';
+  const POSTAL_CODE = 'postalCode';
+  const CITY = 'city';
+  const MUNICIPALITY_CODE = 'municipalityCode';
+  const ADDRESS = 'address';
+  const CO_NAME = 'coName';
+
   /**
    * Is request successful.
    *
@@ -80,6 +92,13 @@ class CprLookupResult {
    * @var string
    */
   protected $municipalityCode;
+
+  /**
+   * Address of the person.
+   *
+   * @var string
+   */
+  protected $address;
 
   /**
    * CO Name of the person.
@@ -252,6 +271,20 @@ class CprLookupResult {
   /**
    * @return string
    */
+  public function getAddress(): string {
+    return $this->address;
+  }
+
+  /**
+   * @param string $address
+   */
+  public function setAddress(string $address): void {
+    $this->address = $address;
+  }
+
+  /**
+   * @return string
+   */
   public function getCoName(): string {
     return $this->coName;
   }
@@ -275,6 +308,29 @@ class CprLookupResult {
    */
   public function setNameAddressProtected(bool $nameAddressProtected): void {
     $this->nameAddressProtected = $nameAddressProtected;
+  }
+
+  /**
+   * Returns the value of the provided field.
+   *
+   * @param $field
+   *   Field name;
+   */
+
+  /**
+   * Returns the value of the provided field.
+   *
+   * @param $field
+   *   Field name.
+   *
+   * @return mixed
+   */
+  public function getFieldValue($field) {
+    if (property_exists($this, $field)) {
+      return $this->{$field};
+    }
+
+    return '';
   }
 
 }

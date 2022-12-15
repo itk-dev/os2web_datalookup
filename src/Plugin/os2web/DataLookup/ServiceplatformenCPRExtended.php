@@ -109,6 +109,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setPostalCode($address->aktuelAdresse->postnummer ?? '');
         $cprResult->setCity($address->aktuelAdresse->postdistrikt ?? '');
         $cprResult->setMunicipalityCode($address->aktuelAdresse->kommunekode ?? '');
+        $cprResult->setAddress($address->aktuelAdresse->standardadresse ?? '');
       }
 
       // Leaving empty, no information in webservice.

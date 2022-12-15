@@ -176,6 +176,7 @@ class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCP
       $cprResult->setPostalCode($result['postnummer'] ?? '');
       $cprResult->setCity($result['postdistrikt'] ?? '');
       $cprResult->setMunicipalityCode($result['kommunekode'] ?? '');
+      $cprResult->setAddress($cprResult->getStreet() . ' ' . $cprResult->getHouseNr() . ', ' . $cprResult->getFloor() . ', ' . $cprResult->getApartmentNr());
       $cprResult->setCoName($result['conavn'] ?? '');
       $cprResult->setNameAddressProtected($result['navneOgAdressebeskyttelse'] ?? '');
     }
