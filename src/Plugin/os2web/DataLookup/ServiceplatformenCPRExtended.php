@@ -75,13 +75,15 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * @inheritDoc
    */
-  public function lookup($cpr) {
+  public function lookup($cpr, $allowCprTestModeReplace = TRUE) {
     if ($this->configuration['mode_selector'] == 1 && $this->configuration['test_mode_fixed_cpr']) {
-      $cpr = $this->configuration['test_mode_fixed_cpr'];
-      \Drupal::messenger()->addMessage(
-        $this->t("Test mode enabled, all CPR lookup requests are made against CPR: %cpr", ['%cpr' => $cpr]),
-        MessengerInterface::TYPE_STATUS
-      );
+      if ($allowCprTestModeReplace) {
+        $cpr = $this->configuration['test_mode_fixed_cpr'];
+        \Drupal::messenger()->addMessage(
+          $this->t("Test mode enabled, all CPR lookup requests are made against CPR: %cpr", ['%cpr' => $cpr]),
+          MessengerInterface::TYPE_STATUS
+        );
+      }
     }
 
     $request = $this->prepareRequest();
@@ -110,6 +112,20 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setCity($address->aktuelAdresse->postdistrikt ?? '');
         $cprResult->setMunicipalityCode($address->aktuelAdresse->kommunekode ?? '');
         $cprResult->setAddress($address->aktuelAdresse->standardadresse ?? '');
+      }
+
+      $relationship = $result['relationer'];
+      if ($relationship->barn && is_array($relationship->barn)) {
+        $children = [];
+        foreach ($relationship->barn as $child) {
+          $childCprResult = $this->lookup($child->personnummer, FALSE);
+
+          $children[] = [
+            'cpr' => $childCprResult->getCpr(),
+            'name' => $childCprResult->getName()
+          ];
+        }
+        $cprResult->setChildren($children);
       }
 
       // Leaving empty, no information in webservice.

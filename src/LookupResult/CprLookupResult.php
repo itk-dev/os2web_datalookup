@@ -115,6 +115,13 @@ class CprLookupResult {
   protected $nameAddressProtected;
 
   /**
+   * Array of children.
+   *
+   * @var array
+   */
+  protected $children = [];
+
+  /**
    * @return bool
    */
   public function isSuccessful(): bool {
@@ -311,11 +318,38 @@ class CprLookupResult {
   }
 
   /**
-   * Returns the value of the provided field.
+   * Returns the children.
    *
-   * @param $field
-   *   Field name;
+   * @return array
+   *   Children array as
+   *   [
+   *     0 => [
+   *       'cpr' => xxxxx,
+   *       'name' => full name,
+   *     ],
+   *     ...
+   *   ]
    */
+  public function getChildren(): array {
+    return $this->children;
+  }
+
+  /**
+   * Sets the children.
+   *
+   * @param array $children
+   *   Children array as
+   *   [
+   *     0 => [
+   *       'cpr' => xxxxx,
+   *       'name' => full name,
+   *     ],
+   *     ...
+   *   ]
+   */
+  public function setChildren(array $children): void {
+    $this->children = $children;
+  }
 
   /**
    * Returns the value of the provided field.
