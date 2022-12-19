@@ -55,9 +55,17 @@ class DataLookupManager extends DefaultPluginManager {
    * {@inheritdoc}
    */
   public function createInstance($plugin_id, array $configuration = []) {
+    // Hard switch to another plugin fallback - see
+    // https://os2web.atlassian.net/browse/OS2FORMS-359.
+    if ($plugin_id == 'serviceplatformen_cpr') {
+      \Drupal::logger('os2web_datalookup')->warning('"Serviceplatformen CPR (SF6008)" is obsolete and will be phased out. Automatically switched to "Serviceplatformen CPR - extended (SF1520)"');
+      $plugin_id = 'serviceplatformen_cpr_extended';
+    }
+
     if (empty($configuration)) {
       $configuration = $this->configFactory->get(DataLookupPluginSettingsForm::getConfigName() . '.' . $plugin_id)->get();
     }
+
     return parent::createInstance($plugin_id, $configuration);
   }
 
