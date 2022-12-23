@@ -42,7 +42,7 @@ See [OS2Web git name convention](https://github.com/OS2Web/docs#git-guideline)
 // CPR lookup.
 /** @var \Drupal\os2web_datalookup\Plugin\DataLookupManager $pluginManager */
 $pluginManager = \Drupal::service('plugin.manager.os2web_datalookup');
-/** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupCPRInterface $cprPlugin */
+/** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupInterfaceCpr $cprPlugin */
 $cprPlugin = $pluginManager->createDefaultInstanceByGroup('cpr_lookup');
 
 if ($cprPlugin->isReady()) {

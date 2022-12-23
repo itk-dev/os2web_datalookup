@@ -16,7 +16,7 @@ use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
  *   group = "cpr_lookup"
  * )
  */
-class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupCPRInterface {
+class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupInterfaceCpr {
 
   /**
    * {@inheritdoc}

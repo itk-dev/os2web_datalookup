@@ -16,7 +16,7 @@ use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
  *   group = "cpr_lookup"
  * )
  */
-class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCPRInterface{
+class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupInterfaceCpr {
 
   /**
    * {@inheritdoc}
@@ -130,7 +130,7 @@ class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupCP
    *   [error] => Descriptive text if something goes wrong
    */
   public function getAddress($cpr) {
-    \Drupal::logger('os2web_datalookup')->notice('Calling \'getAddress()\' directly is deprecated, use DataLookupCPRInterface::lookup() method.');
+    \Drupal::logger('os2web_datalookup')->notice('Calling \'getAddress()\' directly is deprecated, use DataLookupInterfaceCpr::lookup() method.');
 
     $result = $this->cprBasicInformation($cpr);
 

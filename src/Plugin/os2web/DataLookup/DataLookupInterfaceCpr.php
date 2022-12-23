@@ -2,7 +2,7 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
-interface DataLookupCPRInterface extends DataLookupInterface {
+interface DataLookupInterfaceCpr extends DataLookupInterface {
 
   /**
    * Performs lookup for the provided CPR.
@@ -14,4 +14,5 @@ interface DataLookupCPRInterface extends DataLookupInterface {
    *   The CPR lookup Result.
    */
   public function lookup($cpr);
+
 }
