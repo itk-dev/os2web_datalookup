@@ -5,6 +5,7 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\os2web_datalookup\LookupResult\CvrLookupResult;
 
 /**
  * Defines a plugin for ServiceplatformenCVR.
@@ -12,9 +13,10 @@ use Drupal\Core\Render\Markup;
  * @DataLookup(
  *   id = "serviceplatformen_cvr",
  *   label = @Translation("Serviceplatformen CVR"),
+ *   group = "cvr_lookup"
  * )
  */
-class ServiceplatformenCVR extends ServiceplatformenBase {
+class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupInterfaceCvr {
 
   /**
    * {@inheritdoc}
@@ -102,6 +104,35 @@ class ServiceplatformenCVR extends ServiceplatformenBase {
     }
     else {
       return $result;
+    }
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function lookup($cvr) {
+    $result = $this->getInfo($cvr);
+
+    $cvrResult = new CvrLookupResult();
+    if ($result['status']) {
+      $cvrResult->setSuccessful();
+      $cvrResult->setCvr($cvr);
+
+      $cvrResult->setName($result['company_name']);
+      $cvrResult->setStreet($result['company_street']);
+      $cvrResult->setHouseNr($result['company_house_nr']);
+      $cvrResult->setFloor($result['company_floor']);
+      $cvrResult->setPostalCode($result['company_zipcode']);
+
+      $city = $result['company_zipcode'] . ' '  . $result['company_city'];
+      $cvrResult->setCity($city);
+
+      $address = $result['company_street'] . ' ' . $result['company_house_nr'] . ' ' . $result['company_floor'];
+      $cvrResult->setAddress($address);
+    }
+    else {
+      $cvrResult->setSuccessful(FALSE);
+      $cvrResult->setErrorMessage($result['error']);
     }
   }
 

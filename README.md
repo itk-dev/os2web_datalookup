@@ -36,8 +36,15 @@ See [OS2Web git name convention](https://github.com/OS2Web/docs#git-guideline)
 ### Using services in other modules
 
 ```
-// CVR lookup.
-\Drupal::service('plugin.manager.os2web_datalookup')->createInstance('serviceplatformen_cvr')->getLegalUnit('[CVR number]')
+// CVR lookup
+/** @var \Drupal\os2web_datalookup\Plugin\DataLookupManager $pluginManager */
+$pluginManager = \Drupal::service('plugin.manager.os2web_datalookup');
+/** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupInterfaceCvr $cvrPlugin */
+$cvrPlugin = $pluginManager->createDefaultInstanceByGroup('cvr_lookup');
+
+if ($cvrPlugin->isReady()) {
+  $cvrResult = $cvrPlugin->lookup(cvr);
+}
 
 // CPR lookup.
 /** @var \Drupal\os2web_datalookup\Plugin\DataLookupManager $pluginManager */
@@ -48,6 +55,10 @@ $cprPlugin = $pluginManager->createDefaultInstanceByGroup('cpr_lookup');
 if ($cprPlugin->isReady()) {
   $cprResult = $cprPlugin->lookup($cpr);
 }
+
+// CVR lookup - DEPRECATED.
+\Drupal::service('plugin.manager.os2web_datalookup')->createInstance('serviceplatformen_cvr')->getLegalUnit('[CVR number]')
+
 
 // CPP lookup - DEPRECATED.
 \Drupal::service('plugin.manager.os2web_datalookup')->createInstance('serviceplatformen_cpr')->cprBasicInformation('[CPR number]'))
