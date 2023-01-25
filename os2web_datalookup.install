@@ -10,3 +10,12 @@ function os2web_datalookup_update_9001() {
   $config->set("cpr_lookup.default_plugin", 'serviceplatformen_cpr_extended');
   $config->save();
 }
+
+/**
+ * Setting "datafordeler_cvr" as default CVR lookup plugin.
+ */
+function os2web_datalookup_update_9002() {
+  $config = \Drupal::service('config.factory')->getEditable(DataLookupPluginGroupSettingsForm::$configName);
+  $config->set("cvr_lookup.default_plugin", 'datafordeler_cvr');
+  $config->save();
+}

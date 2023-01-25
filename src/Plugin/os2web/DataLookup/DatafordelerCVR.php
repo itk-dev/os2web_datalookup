@@ -8,9 +8,6 @@ use Drupal\Core\Render\Markup;
 use Drupal\os2web_datalookup\LookupResult\CvrLookupResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use Psr\Http\Message\RequestInterface;
 
 /**
  * Defines a plugin for DatafordelerCVR.
