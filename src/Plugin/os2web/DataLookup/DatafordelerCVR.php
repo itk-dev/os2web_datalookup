@@ -74,7 +74,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
     }
 
     $cvrResult = new CompanyLookupResult();
-    if ($result && isset($result->virksomhed) && !empty($result->virksomhed)) {
+    if ($result && isset($result->virksomhed) && !empty((array) $result->virksomhed)) {
       $cvrResult->setSuccessful();
       $cvrResult->setCvr($cvr);
 

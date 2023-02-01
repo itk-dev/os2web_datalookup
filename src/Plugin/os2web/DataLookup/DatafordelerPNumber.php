@@ -74,9 +74,9 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfac
     }
 
     $cvrResult = new CompanyLookupResult();
-    if ($result && isset($result->produktionsenhed) && !empty($result->produktionsenhed)) {
+    if ($result && isset($result->produktionsenhed) && !empty((array) $result->produktionsenhed)) {
       $cvrResult->setSuccessful();
-      $cvrResult->setCvr($result->produktionsenhed->tilknyttetVirksomhedsCVRNummer);
+      $cvrResult->setCvr($result->produktionsenhed->tilknyttetVirksomhedsCVRNummer ?? '');
 
       if ($result->produktionsenhedsnavn) {
         $cvrResult->setName($result->produktionsenhedsnavn->vaerdi);
