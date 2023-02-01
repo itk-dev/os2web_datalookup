@@ -39,11 +39,11 @@ See [OS2Web git name convention](https://github.com/OS2Web/docs#git-guideline)
 // CVR lookup
 /** @var \Drupal\os2web_datalookup\Plugin\DataLookupManager $pluginManager */
 $pluginManager = \Drupal::service('plugin.manager.os2web_datalookup');
-/** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupInterfaceCvr $cvrPlugin */
+/** @var \Drupal\os2web_datalookup\Plugin\os2web\DataLookup\DataLookupInterfaceCompany $cvrPlugin */
 $cvrPlugin = $pluginManager->createDefaultInstanceByGroup('cvr_lookup');
 
 if ($cvrPlugin->isReady()) {
-  $cvrResult = $cvrPlugin->lookup(cvr);
+  $cvrResult = $cvrPlugin->lookup($cvr);
 }
 
 // CPR lookup.

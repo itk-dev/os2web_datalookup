@@ -5,7 +5,7 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
-use Drupal\os2web_datalookup\LookupResult\CvrLookupResult;
+use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
 
 /**
  * Defines a plugin for ServiceplatformenPNumber.
@@ -13,9 +13,10 @@ use Drupal\os2web_datalookup\LookupResult\CvrLookupResult;
  * @DataLookup(
  *   id = "serviceplatformen_p_number",
  *   label = @Translation("Serviceplatformen P-number"),
+ *   group = "pnumber_lookup"
  * )
  */
-class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLookupInterfaceCvr {
+class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLookupInterfaceCompany {
 
   /**
    * {@inheritdoc}
@@ -110,15 +111,15 @@ class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLook
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function lookup($cvr) {
-    $result = $this->getInfo($cvr);
+  public function lookup($pNumber) {
+    $result = $this->getInfo($pNumber);
 
-    $cvrResult = new CvrLookupResult();
+    $cvrResult = new CompanyLookupResult();
     if ($result['status']) {
       $cvrResult->setSuccessful();
-      $cvrResult->setCvr($cvr);
+      $cvrResult->setCvr($result['cvr']);
 
       $cvrResult->setName($result['company_name']);
       $cvrResult->setStreet($result['company_street']);
@@ -126,7 +127,7 @@ class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLook
       $cvrResult->setFloor($result['company_floor']);
       $cvrResult->setPostalCode($result['company_zipcode']);
 
-      $city = $result['company_zipcode'] . ' '  . $result['company_city'];
+      $city = $result['company_zipcode'] . ' ' . $result['company_city'];
       $cvrResult->setCity($city);
 
       $address = $result['company_street'] . ' ' . $result['company_house_nr'] . ' ' . $result['company_floor'];

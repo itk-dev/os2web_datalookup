@@ -2,7 +2,7 @@
 
 namespace Drupal\os2web_datalookup\LookupResult;
 
-class CvrLookupResult {
+class CompanyLookupResult {
 
   const CVR = 'cvr';
   const NAME = 'name';

@@ -19,3 +19,12 @@ function os2web_datalookup_update_9002() {
   $config->set("cvr_lookup.default_plugin", 'datafordeler_cvr');
   $config->save();
 }
+
+/**
+ * Setting "datafordeler_pnumber" as default P-Number lookup plugin.
+ */
+function os2web_datalookup_update_9003() {
+  $config = \Drupal::service('config.factory')->getEditable(DataLookupPluginGroupSettingsForm::$configName);
+  $config->set("pnumber_lookup.default_plugin", 'datafordeler_pnumber');
+  $config->save();
+}

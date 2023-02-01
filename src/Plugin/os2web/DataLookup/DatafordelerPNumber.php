@@ -9,15 +9,15 @@ use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
 use GuzzleHttp\Exception\ClientException;
 
 /**
- * Defines a plugin for DatafordelerCVR.
+ * Defines a plugin for DatafordelerPNumber.
  *
  * @DataLookup(
- *   id = "datafordeler_cvr",
- *   label = @Translation("Datafordeler CVR"),
- *   group = "cvr_lookup"
+ *   id = "datafordeler_pnumber",
+ *   label = @Translation("Datafordeler P-Number"),
+ *   group = "pnumber_lookup"
  * )
  */
-class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCompany {
+class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfaceCompany {
 
   /**
    * {@inheritdoc}
@@ -36,9 +36,9 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    $form['test_cvr'] = [
+    $form['test_pnumber'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Test CVR nr.'),
+      '#title' => $this->t('Test P-Number'),
     ];
 
     return $form;
@@ -50,8 +50,8 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    if (!empty($form_state->getValue('test_cvr'))) {
-      $lookupResult = $this->lookup($form_state->getValue('test_cvr'));
+    if (!empty($form_state->getValue('test_pnumber'))) {
+      $lookupResult = $this->lookup($form_state->getValue('test_pnumber'));
       $response = (array) $lookupResult;
 
       \Drupal::messenger()->addMessage(
@@ -64,9 +64,9 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   /**
    * {@inheritdoc}
    */
-  public function lookup($cvr) {
+  public function lookup($param) {
     try {
-      $response = $this->httpClient->get('hentVirksomhedMedCVRNummer', ['query' => ['pCVRNummer' => $cvr]]);
+      $response = $this->httpClient->get('hentProduktionsenhedMedPNummer', ['query' => ['ppNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
@@ -74,12 +74,12 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
     }
 
     $cvrResult = new CompanyLookupResult();
-    if ($result && isset($result->virksomhed) && !empty($result->virksomhed)) {
+    if ($result && isset($result->produktionsenhed) && !empty($result->produktionsenhed)) {
       $cvrResult->setSuccessful();
-      $cvrResult->setCvr($cvr);
+      $cvrResult->setCvr($result->produktionsenhed->tilknyttetVirksomhedsCVRNummer);
 
-      if ($result->virksomhedsnavn) {
-        $cvrResult->setName($result->virksomhedsnavn->vaerdi);
+      if ($result->produktionsenhedsnavn) {
+        $cvrResult->setName($result->produktionsenhedsnavn->vaerdi);
       }
 
       if ($result->beliggenhedsadresse) {
