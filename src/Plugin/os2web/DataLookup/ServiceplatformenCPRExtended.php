@@ -115,14 +115,14 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       $relationship = $result['relationer'];
-      if ($relationship->barn && is_array($relationship->barn)) {
+      if (isset($relationship->barn) && is_array($relationship->barn)) {
         $children = [];
         foreach ($relationship->barn as $child) {
           $childCprResult = $this->lookup($child->personnummer, FALSE);
 
           $children[] = [
             'cpr' => $childCprResult->getCpr(),
-            'name' => $childCprResult->getName()
+            'name' => $childCprResult->getName(),
           ];
         }
         $cprResult->setChildren($children);
