@@ -281,7 +281,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
     if (!$this->isReady()) {
       return [
         'status' => FALSE,
-        'text' => $this->getStatus(),
+        'error' => $this->getStatus(),
       ];
     }
 
