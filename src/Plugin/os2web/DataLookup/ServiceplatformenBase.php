@@ -2,6 +2,7 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -84,7 +85,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
       '#maxlength' => 500,
       '#title' => 'Service WSDL location',
       '#default_value' => $this->configuration['wsdl'],
-      '#description' => $this->t('ex. CVROnline-SF1530/wsdl/token/OnlineService.wsdl, relative path would be automatically converted to absolute path'),
+      '#description' => $this->t('ex. CVROnline-SF1530/wsdl/token/OnlineService.wsdl. A relative path will be resolved relatively to the location of the OS2Web datalookup module.'),
     ];
 
     $form['location'] = [
@@ -236,13 +237,16 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    *   WSDL URL.
    */
   protected function getWsdlUrl() {
-    $wsdl = $this->configuration['wsdl'];
-    // If it is relative URL make is absolute.
-    if (substr($wsdl, 0, 4) !== "http") {
-      global $base_url, $base_path;
-      $wsdl = $base_url . $base_path . drupal_get_path('module', 'os2web_datalookup') . '/' . $wsdl;
+    $url = $this->configuration['wsdl'];
+    // Anything that's not an absolute path or url will be resolved relative to
+    // the location of the os2web_datalookup module.
+    if (!preg_match('@^([a-z]+:/)?/@', $url)) {
+      /** @var ExtensionPathResolver $extensionPathResolver */
+      $extensionPathResolver = \Drupal::service('extension.path.resolver');
+      $path = realpath($extensionPathResolver->getPath('module', 'os2web_datalookup'));
+      $url = 'file://'.$path.'/'.$url;
     }
-    return $wsdl;
+    return $url;
   }
 
   /**
