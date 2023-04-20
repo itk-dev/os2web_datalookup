@@ -2,7 +2,6 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
-use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -241,10 +240,10 @@ abstract class ServiceplatformenBase extends DataLookupBase {
     // Anything that's not an absolute path or url will be resolved relative to
     // the location of the os2web_datalookup module.
     if (!preg_match('@^([a-z]+:/)?/@', $url)) {
-      /** @var ExtensionPathResolver $extensionPathResolver */
+      /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
       $extensionPathResolver = \Drupal::service('extension.path.resolver');
       $path = realpath($extensionPathResolver->getPath('module', 'os2web_datalookup'));
-      $url = 'file://'.$path.'/'.$url;
+      $url = 'file://' . $path . '/' . $url;
     }
     return $url;
   }
