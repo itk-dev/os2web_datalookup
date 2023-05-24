@@ -73,7 +73,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   }
 
   /**
-   * @inheritDoc
+   * {@inheritDoc}
    */
   public function lookup($cpr, $allowCprTestModeReplace = TRUE) {
     if ($this->configuration['mode_selector'] == 1 && $this->configuration['test_mode_fixed_cpr']) {
@@ -115,8 +115,13 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       $relationship = $result['relationer'];
-      if (isset($relationship->barn) && is_array($relationship->barn)) {
-        $children = [];
+
+      $children = [];
+      if (isset($relationship->barn)) {
+        if (!is_array($relationship->barn)) {
+          $relationship->barn = [$relationship->barn];
+        }
+
         foreach ($relationship->barn as $child) {
           $childCprResult = $this->lookup($child->personnummer, FALSE);
 
@@ -125,8 +130,8 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
             'name' => $childCprResult->getName(),
           ];
         }
-        $cprResult->setChildren($children);
       }
+      $cprResult->setChildren($children);
 
       // Leaving empty, no information in webservice.
       $cprResult->setCoName('');
