@@ -122,13 +122,20 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $relationship->barn = [$relationship->barn];
         }
 
-        foreach ($relationship->barn as $child) {
-          $childCprResult = $this->lookup($child->personnummer, FALSE);
-
-          $children[] = [
-            'cpr' => $childCprResult->getCpr(),
-            'name' => $childCprResult->getName(),
+        foreach ($relationship->barn as $relationshipChild) {
+          // Sometimes CPR lookup can return no results, creating child without
+          // name.
+          $child = [
+            'cpr' => $relationshipChild->personnummer,
+            'name' => '',
           ];
+
+          $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE);
+          if ($childCprResult->isSuccessful()) {
+            $child['name'] = $childCprResult->getName();
+          }
+
+          $children[] = $child;
         }
       }
       $cprResult->setChildren($children);
