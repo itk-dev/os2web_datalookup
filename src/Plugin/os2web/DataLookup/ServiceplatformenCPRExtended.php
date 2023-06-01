@@ -111,7 +111,23 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setPostalCode($address->aktuelAdresse->postnummer ?? '');
         $cprResult->setCity($address->aktuelAdresse->postdistrikt ?? '');
         $cprResult->setMunicipalityCode($address->aktuelAdresse->kommunekode ?? '');
-        $cprResult->setAddress($address->aktuelAdresse->standardadresse ?? '');
+
+        // Composing full address in one line.
+        $address = $cprResult->getStreet();
+        if ($cprResult->getHouseNr()) {
+          $address .= ' ' . $cprResult->getHouseNr();
+        }
+        if ($cprResult->getFloor()) {
+          $address .= ' ' . $cprResult->getFloor();
+        }
+        if ($cprResult->getApartmentNr()) {
+          $address .= ' ' . $cprResult->getApartmentNr();
+        }
+        if ($cprResult->getPostalCode() && $cprResult->getCity()) {
+          $address .= ', ' . $cprResult->getPostalCode() . ' ' . $cprResult->getCity();
+        }
+
+        $cprResult->setAddress($address ?? '');
       }
 
       $relationship = $result['relationer'];
