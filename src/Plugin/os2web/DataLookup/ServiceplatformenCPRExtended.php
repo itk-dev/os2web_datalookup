@@ -111,7 +111,23 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setPostalCode($address->aktuelAdresse->postnummer ?? '');
         $cprResult->setCity($address->aktuelAdresse->postdistrikt ?? '');
         $cprResult->setMunicipalityCode($address->aktuelAdresse->kommunekode ?? '');
-        $cprResult->setAddress($address->aktuelAdresse->standardadresse ?? '');
+
+        // Composing full address in one line.
+        $address = $cprResult->getStreet();
+        if ($cprResult->getHouseNr()) {
+          $address .= ' ' . $cprResult->getHouseNr();
+        }
+        if ($cprResult->getFloor()) {
+          $address .= ' ' . $cprResult->getFloor();
+        }
+        if ($cprResult->getApartmentNr()) {
+          $address .= ' ' . $cprResult->getApartmentNr();
+        }
+        if ($cprResult->getPostalCode() && $cprResult->getCity()) {
+          $address .= ', ' . $cprResult->getPostalCode() . ' ' . $cprResult->getCity();
+        }
+
+        $cprResult->setAddress($address ?? '');
       }
 
       $relationship = $result['relationer'];
@@ -122,13 +138,20 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $relationship->barn = [$relationship->barn];
         }
 
-        foreach ($relationship->barn as $child) {
-          $childCprResult = $this->lookup($child->personnummer, FALSE);
-
-          $children[] = [
-            'cpr' => $childCprResult->getCpr(),
-            'name' => $childCprResult->getName(),
+        foreach ($relationship->barn as $relationshipChild) {
+          // Sometimes CPR lookup can return no results, creating child without
+          // name.
+          $child = [
+            'cpr' => $relationshipChild->personnummer,
+            'name' => '',
           ];
+
+          $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE);
+          if ($childCprResult->isSuccessful()) {
+            $child['name'] = $childCprResult->getName();
+          }
+
+          $children[] = $child;
         }
       }
       $cprResult->setChildren($children);
