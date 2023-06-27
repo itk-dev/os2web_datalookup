@@ -122,6 +122,13 @@ class CprLookupResult {
   protected $children = [];
 
   /**
+   * Is subscribe to digital post.
+   *
+   * @var bool
+   */
+  protected $digitalPostSubscribed = FALSE;
+
+  /**
    * @return bool
    */
   public function isSuccessful(): bool {
@@ -349,6 +356,20 @@ class CprLookupResult {
    */
   public function setChildren(array $children): void {
     $this->children = $children;
+  }
+
+  /**
+   * @param bool $digitalPostSubscribed
+   */
+  public function setDigitalPostSubscribed(bool $digitalPostSubscribed): void {
+    $this->digitalPostSubscribed = $digitalPostSubscribed;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isDigitalPostSubscribed(): bool {
+    return $this->digitalPostSubscribed;
   }
 
   /**

@@ -102,6 +102,10 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setName($persondata->navn->personadresseringsnavn);
       }
 
+      if ($persondata->tilmeldtDigitalpost) {
+        $cprResult->setDigitalPostSubscribed(TRUE);
+      }
+
       $address = $result['adresse'];
       if ($address->aktuelAdresse) {
         $cprResult->setStreet($address->aktuelAdresse->vejnavn ?? '');
