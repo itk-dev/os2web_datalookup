@@ -129,6 +129,34 @@ class CprLookupResult {
   protected $digitalPostSubscribed = FALSE;
 
   /**
+   * Is alive.
+   *
+   * @var bool
+   */
+  protected $alive = TRUE;
+
+  /**
+   * Is Danish citizen.
+   *
+   * @var bool
+   */
+  protected $citizen = TRUE;
+
+  /**
+   * Citizenship date obtained.
+   *
+   * @var \DateTime
+   */
+  protected \DateTime $citizenshipDate;
+
+  /**
+   * Date of birth.
+   *
+   * @var \DateTime
+   */
+  protected \DateTime $birthDate;
+
+  /**
    * @return bool
    */
   public function isSuccessful(): bool {
@@ -370,6 +398,62 @@ class CprLookupResult {
    */
   public function isDigitalPostSubscribed(): bool {
     return $this->digitalPostSubscribed;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isAlive(): bool {
+    return $this->alive;
+  }
+
+  /**
+   * @param bool $alive
+   */
+  public function setAlive(bool $alive): void {
+    $this->alive = $alive;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isCitizen(): bool {
+    return $this->citizen;
+  }
+
+  /**
+   * @param bool $citizen
+   */
+  public function setCitizen(bool $citizen): void {
+    $this->citizen = $citizen;
+  }
+
+  /**
+   * @return \DateTime
+   */
+  public function getCitizenshipDate(): \DateTime {
+    return $this->citizenshipDate;
+  }
+
+  /**
+   * @param \DateTime $citizenshipDate
+   */
+  public function setCitizenshipDate(\DateTime $citizenshipDate): void {
+    $this->citizenshipDate = $citizenshipDate;
+  }
+
+  /**
+   * @return \DateTime
+   */
+  public function getBirthDate(): \DateTime {
+    return $this->birthDate;
+  }
+
+  /**
+   * @param \DateTime $birthDate
+   */
+  public function setBirthDate(\DateTime $birthDate): void {
+    $this->birthDate = $birthDate;
   }
 
   /**

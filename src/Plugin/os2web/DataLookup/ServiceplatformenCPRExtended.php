@@ -2,6 +2,7 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
+use DateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
@@ -17,6 +18,16 @@ use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
  * )
  */
 class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupInterfaceCpr {
+
+  /**
+   * Status = DEAD.
+   */
+  const CPR_STATUS_DEAD = 90;
+
+  /**
+   * Denmark country code.
+   */
+  const DENMARK_COUNTRY_CODE = 5100;
 
   /**
    * {@inheritdoc}
@@ -96,10 +107,37 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
     if ($result['status']) {
       $cprResult->setSuccessful();
       $cprResult->setCpr($cpr);
+
       $persondata = $result['persondata'];
+
+      if ($persondata->status) {
+        if ($persondata->status->status == self::CPR_STATUS_DEAD) {
+          $cprResult->setAlive(FALSE);
+        }
+        else {
+          $cprResult->setAlive(TRUE);
+        }
+      }
+
+      if ($persondata->statsborgerskab) {
+        if ($persondata->statsborgerskab->landekode == self::DENMARK_COUNTRY_CODE) {
+          $cprResult->setCitizen(TRUE);
+        }
+        else {
+          $cprResult->setCitizen(FALSE);
+        }
+
+        $citizenshipDate = DateTime::createFromFormat(DateTime::RFC3339_EXTENDED, $persondata->statsborgerskab->statsborgerskabDato->dato);
+        $cprResult->setCitizenshipDate($citizenshipDate);
+      }
 
       if ($persondata->navn) {
         $cprResult->setName($persondata->navn->personadresseringsnavn);
+      }
+
+      if ($persondata->foedselsdato) {
+        $birthDate = DateTime::createFromFormat("Y-m-dP", $persondata->foedselsdato->dato);
+        $cprResult->setBirthDate($birthDate);
       }
 
       if ($persondata->tilmeldtDigitalpost) {
