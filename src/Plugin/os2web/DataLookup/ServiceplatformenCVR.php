@@ -83,9 +83,11 @@ class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupIn
    *   [company_name] => Name of the organization,
    *   [company_street] => Street name,
    *   [company_house_nr] => House nr,
+   *   [company_apartment_nr] => House nr,
    *   [company_floor] => Floor nr,
    *   [company_zipcode] => ZIP code
-   *   [company_city] => City,
+   *   [company_city] => City
+   *   [company_municipalitycode] => Municipality code,
    */
   public function getInfo($cvr) {
     $result = $this->getLegalUnit($cvr);
@@ -97,9 +99,11 @@ class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupIn
         'company_name' => $legalUnit['LegalUnitName']->name,
         'company_street' => $legalUnit['AddressOfficial']->AddressPostalExtended->StreetName,
         'company_house_nr' => $legalUnit['AddressOfficial']->AddressPostalExtended->StreetBuildingIdentifier,
-        'company_floor' => $legalUnit['AddressOfficial']->AddressPostalExtended->FloorIdentifier,
+        'company_apartment_nr' => $legalUnit['AddressOfficial']->AddressPostalExtended->SuiteIdentifier ?? '',
+        'company_floor' => $legalUnit['AddressOfficial']->AddressPostalExtended->FloorIdentifier ?? '',
         'company_zipcode' => $legalUnit['AddressOfficial']->AddressPostalExtended->PostCodeIdentifier,
         'company_city' => $legalUnit['AddressOfficial']->AddressPostalExtended->DistrictName,
+        'company_municipalitycode' => $legalUnit['AddressOfficial']->AddressAccess->MunicipalityCode,
       ];
     }
     else {
@@ -121,19 +125,37 @@ class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupIn
       $cvrResult->setName($result['company_name']);
       $cvrResult->setStreet($result['company_street']);
       $cvrResult->setHouseNr($result['company_house_nr']);
+      $cvrResult->setApartmentNr($result['company_apartment_nr']);
       $cvrResult->setFloor($result['company_floor']);
       $cvrResult->setPostalCode($result['company_zipcode']);
+      $cvrResult->setMunicipalityCode($result['company_municipalitycode']);
 
       $city = $result['company_zipcode'] . ' ' . $result['company_city'];
       $cvrResult->setCity($city);
 
-      $address = $result['company_street'] . ' ' . $result['company_house_nr'] . ' ' . $result['company_floor'];
-      $cvrResult->setAddress($address);
+      // Composing full address in one line.
+      $address = $cvrResult->getStreet();
+      if ($cvrResult->getHouseNr()) {
+        $address .= ' ' . $cvrResult->getHouseNr();
+      }
+      if ($cvrResult->getFloor()) {
+        $address .= ' ' . $cvrResult->getFloor();
+      }
+      if ($cvrResult->getApartmentNr()) {
+        $address .= ' ' . $cvrResult->getApartmentNr();
+      }
+      if ($cvrResult->getPostalCode() && $cvrResult->getCity()) {
+        $address .= ', ' . $cvrResult->getPostalCode() . ' ' . $cvrResult->getCity();
+      }
+
+      $cvrResult->setAddress($address ?? '');
     }
     else {
       $cvrResult->setSuccessful(FALSE);
       $cvrResult->setErrorMessage($result['error']);
     }
+
+    return $cvrResult;
   }
 
 }
