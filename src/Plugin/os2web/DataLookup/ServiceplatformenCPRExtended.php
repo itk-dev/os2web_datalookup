@@ -86,7 +86,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * {@inheritDoc}
    */
-  public function lookup($cpr, $allowCprTestModeReplace = TRUE) {
+  public function lookup($cpr, $fetchChildren = TRUE, $allowCprTestModeReplace = TRUE) {
     if ($this->configuration['mode_selector'] == 1 && $this->configuration['test_mode_fixed_cpr']) {
       if ($allowCprTestModeReplace) {
         $cpr = $this->configuration['test_mode_fixed_cpr'];
@@ -132,7 +132,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       if ($persondata->navn) {
-        $cprResult->setName($persondata->navn->personadresseringsnavn);
+        $cprResult->setName($persondata->navn->personadresseringsnavn ?? '');
       }
 
       if ($persondata->foedselsdato) {
@@ -175,7 +175,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       $relationship = $result['relationer'];
 
       $children = [];
-      if (isset($relationship->barn)) {
+      if ($fetchChildren && isset($relationship->barn)) {
         if (!is_array($relationship->barn)) {
           $relationship->barn = [$relationship->barn];
         }
@@ -188,7 +188,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
             'name' => '',
           ];
 
-          $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE);
+          $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE, FALSE);
           if ($childCprResult->isSuccessful()) {
             $child['name'] = $childCprResult->getName();
           }
