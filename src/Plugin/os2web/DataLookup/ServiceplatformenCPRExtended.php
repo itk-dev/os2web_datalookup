@@ -30,6 +30,26 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   const DENMARK_COUNTRY_CODE = 5100;
 
   /**
+   * Guardian other 1.
+   */
+  const GUARDIAN_OTHER_1 = 1;
+
+  /**
+   * Guardian other 2.
+   */
+  const GUARDIAN_OTHER_2 = 1;
+
+  /**
+   * Guardian mother 3.
+   */
+  const GUARDIAN_MOTHER = 3;
+
+  /**
+   * Guardian father 4.
+   */
+  const GUARDIAN_FATHER = 4;
+
+  /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
@@ -174,6 +194,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
 
       $relationship = $result['relationer'];
 
+      // Setting children.
       $children = [];
       if ($fetchChildren && isset($relationship->barn)) {
         if (!is_array($relationship->barn)) {
@@ -181,22 +202,58 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         }
 
         foreach ($relationship->barn as $relationshipChild) {
-          // Sometimes CPR lookup can return no results, creating child without
-          // name.
-          $child = [
-            'cpr' => $relationshipChild->personnummer,
-            'name' => '',
-          ];
-
           $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE, FALSE);
-          if ($childCprResult->isSuccessful()) {
-            $child['name'] = $childCprResult->getName();
-          }
 
-          $children[] = $child;
+          if ($childCprResult->isSuccessful() && $childCprResult->hasGuardian($cpr)) {
+            $child['name'] = $childCprResult->getName();
+
+            $child = [
+              'cpr' => $relationshipChild->personnummer,
+              'name' => $child['name']
+            ];
+
+            $children[] = $child;
+          }
         }
       }
       $cprResult->setChildren($children);
+
+      // Setting guardians.
+      $guardians = [];
+
+      if (isset($relationship->foraeldremyndighed)) {
+        if (!(is_array($relationship->foraeldremyndighed))) {
+          $relationship->foraeldremyndighed = [$relationship->foraeldremyndighed];
+        }
+
+        foreach ($relationship->foraeldremyndighed as $relationshipGuardian) {
+          if ($relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_MOTHER) {
+            $guardian = [
+              'type' => self::GUARDIAN_MOTHER,
+              'cpr' => $relationship->mor->personnummer ?? NULL,
+            ];
+
+            $guardians[] = $guardian;
+          }
+          elseif ($relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_FATHER) {
+            $guardian = [
+              'type' => self::GUARDIAN_FATHER,
+              'cpr' => $relationship->far->personnummer ?? NULL,
+            ];
+
+            $guardians[] = $guardian;
+          }
+          elseif ($relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_OTHER_1 || $relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_OTHER_2) {
+            $guardian = [
+              'type' => $relationshipGuardian->foraeldremyndighedtype,
+              'cpr' => $relationshipGuardian->relationCpr,
+            ];
+
+            $guardians[] = $guardian;
+          }
+        }
+      }
+      $cprResult->setGuardians($guardians);
 
       // Leaving empty, no information in webservice.
       $cprResult->setCoName('');

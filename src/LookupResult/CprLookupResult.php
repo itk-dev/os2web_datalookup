@@ -122,6 +122,13 @@ class CprLookupResult {
   protected $children = [];
 
   /**
+   * Array of guardians.
+   *
+   * @var array
+   */
+  protected $guardians = [];
+
+  /**
    * Is subscribe to digital post.
    *
    * @var bool
@@ -387,6 +394,40 @@ class CprLookupResult {
   }
 
   /**
+   * Returns the guardians.
+   *
+   * @return array
+   *   Guardians array as
+   *   [
+   *     0 => [
+   *       'cpr' => xxxxx,
+   *       'type' => type of guardian,
+   *     ],
+   *     ...
+   *   ]
+   */
+  public function getGuardians(): array {
+    return $this->guardians;
+  }
+
+  /**
+   * Sets the guardians.
+   *
+   * @param array $guardians
+   *   Guardians array as
+   *   [
+   *     0 => [
+   *       'cpr' => xxxxx,
+   *       'type' => 1|2|3|4,
+   *     ],
+   *     ...
+   *   ]
+   */
+  public function setGuardians(array $guardians): void {
+    $this->guardians = $guardians;
+  }
+
+  /**
    * @param bool $digitalPostSubscribed
    */
   public function setDigitalPostSubscribed(bool $digitalPostSubscribed): void {
@@ -454,6 +495,25 @@ class CprLookupResult {
    */
   public function setBirthDate(\DateTime $birthDate): void {
     $this->birthDate = $birthDate;
+  }
+
+  /**
+   * Checks if the provided CPR is in list of guardians.
+   *
+   * @param $cpr
+   *   Cpr number.
+   *
+   * @return bool
+   *   TRUE if person has provided CPR as guardian, FALSE otherwise.
+   */
+  public function hasGuardian($cpr): bool {
+    foreach ($this->guardians as $guardian) {
+      if ($guardian['cpr'] == $cpr) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**
