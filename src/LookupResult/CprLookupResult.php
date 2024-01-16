@@ -112,7 +112,7 @@ class CprLookupResult {
    *
    * @var bool
    */
-  protected $nameAddressProtected;
+  protected $nameAddressProtected = FALSE;
 
   /**
    * Array of children.
@@ -385,6 +385,7 @@ class CprLookupResult {
    *     0 => [
    *       'cpr' => xxxxx,
    *       'name' => full name,
+   *       'nameAddressProtected' => TRUE/FALSE
    *     ],
    *     ...
    *   ]
@@ -402,6 +403,7 @@ class CprLookupResult {
    *     0 => [
    *       'cpr' => xxxxx,
    *       'type' => type of guardian,
+   *       'nameAddressProtected' => TRUE/FALSE
    *     ],
    *     ...
    *   ]

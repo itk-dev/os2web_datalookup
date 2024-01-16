@@ -164,6 +164,12 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setDigitalPostSubscribed(TRUE);
       }
 
+      if ($persondata->adressebeskyttelse) {
+        if ($persondata->adressebeskyttelse->beskyttet) {
+          $cprResult->setNameAddressProtected(TRUE);
+        }
+      }
+
       $address = $result['adresse'];
       if ($address->aktuelAdresse) {
         $cprResult->setStreet($address->aktuelAdresse->vejnavn ?? '');
@@ -205,11 +211,12 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE, FALSE);
 
           if ($childCprResult->isSuccessful() && $childCprResult->hasGuardian($cpr)) {
-            $child['name'] = $childCprResult->getName();
+            $child['name'] = $childCprResult->getName() ?? $childCprResult->getCpr();
 
             $child = [
               'cpr' => $relationshipChild->personnummer,
-              'name' => $child['name']
+              'name' => $child['name'],
+              'nameAddressProtected' => $childCprResult->isNameAddressProtected(),
             ];
 
             $children[] = $child;
@@ -257,7 +264,6 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
 
       // Leaving empty, no information in webservice.
       $cprResult->setCoName('');
-      $cprResult->setNameAddressProtected(FALSE);
     }
     else {
       $cprResult->setSuccessful(FALSE);
