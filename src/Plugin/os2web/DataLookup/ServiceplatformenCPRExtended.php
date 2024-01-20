@@ -165,9 +165,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       if ($persondata->adressebeskyttelse) {
-        if ($persondata->adressebeskyttelse->beskyttet) {
-          $cprResult->setNameAddressProtected(TRUE);
-        }
+        $cprResult->setNameAddressProtected($persondata->adressebeskyttelse->beskyttet ?? FALSE);
       }
 
       $address = $result['adresse'];
