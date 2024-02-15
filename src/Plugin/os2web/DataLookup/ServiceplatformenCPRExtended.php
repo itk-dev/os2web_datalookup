@@ -209,7 +209,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $childCprResult = $this->lookup($relationshipChild->personnummer, FALSE, FALSE);
 
           if ($childCprResult->isSuccessful() && $childCprResult->hasGuardian($cpr)) {
-            $child['name'] = $childCprResult->getName() ?? $childCprResult->getCpr();
+            $child['name'] = !empty($childCprResult->getName()) ? $childCprResult->getName() : $childCprResult->getCpr();
 
             $child = [
               'cpr' => $relationshipChild->personnummer,
