@@ -289,10 +289,14 @@ abstract class ServiceplatformenBase extends DataLookupBase {
     }
 
     try {
+      $msg = sprintf('Method %s called with (%s)', $method, implode(', ', $request));
+      os2forms_audit_log('DataLookup', time(), $msg, TRUE);
       $response = (array) $this->client->$method($request);
       $response['status'] = TRUE;
     }
     catch (\SoapFault $e) {
+      $msg = sprintf('Method %s called with (%s): %s', $method, implode(', ', $request), $e->faultstring);
+      os2forms_audit_log('DataLookup', time(), $msg, TRUE, ['error' => TRUE]);
       $response = [
         'status' => FALSE,
         'error' => $e->faultstring,

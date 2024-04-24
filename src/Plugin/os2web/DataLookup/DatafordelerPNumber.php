@@ -66,10 +66,13 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfac
    */
   public function lookup(string $param): CompanyLookupResult {
     try {
+      os2forms_audit_log('DataLookup', time(), 'Hent produktionsenhed med PNummer: ' . $param, TRUE);
       $response = $this->httpClient->get('hentProduktionsenhedMedPNummer', ['query' => ['ppNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
+      $msg = sprintf('Hent produktionsenhed med PNummer (%s): %s', $param, $e->getMessage());
+      os2forms_audit_log('DataLookup', time(), $msg, TRUE, ['error' => TRUE]);
       $result = $e->getMessage();
     }
 
@@ -90,7 +93,7 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfac
         $cvrResult->setFloor($address->CVRAdresse_etagebetegnelse ?? '');
         $cvrResult->setApartmentNr($address->CVRAdresse_doerbetegnelse ?? '');
         $cvrResult->setPostalCode($address->CVRAdresse_postnummer ?? '');
-        $city = $address->CVRAdresse_postdistrikt ?? '' . $cvrResult->getPostalCode();
+        $city = ($address->CVRAdresse_postdistrikt ?? '') . $cvrResult->getPostalCode() ?? '';
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
         $address = $cvrResult->getStreet() . ' ' . $cvrResult->getHouseNr() . ' ' . $cvrResult->getFloor() . $cvrResult->getApartmentNr();

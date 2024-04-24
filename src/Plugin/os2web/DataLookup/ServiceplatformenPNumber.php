@@ -138,7 +138,7 @@ class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLook
       $cvrResult->setErrorMessage($result['error']);
     }
 
-    // @todo: Noting returned?
+    return $cvrResult;
   }
 
 }

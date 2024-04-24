@@ -66,10 +66,13 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
    */
   public function lookup(string $param): CompanyLookupResult {
     try {
+      os2forms_audit_log('DataLookup', time(), 'Hent virksomhed med CVRNummer: ' . $param, TRUE);
       $response = $this->httpClient->get('hentVirksomhedMedCVRNummer', ['query' => ['pCVRNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
+      $msg = sprintf('Hent virksomhed med CVRNummer (%s): %s', $param, $e->getMessage());
+      os2forms_audit_log('DataLookup', time(), $msg, TRUE, ['error' => TRUE]);
       $result = $e->getMessage();
     }
 
@@ -90,7 +93,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
         $cvrResult->setFloor($address->CVRAdresse_etagebetegnelse ?? '');
         $cvrResult->setApartmentNr($address->CVRAdresse_doerbetegnelse ?? '');
         $cvrResult->setPostalCode($address->CVRAdresse_postnummer ?? '');
-        $city = $address->CVRAdresse_postdistrikt ?? '' . $cvrResult->getPostalCode();
+        $city = ($address->CVRAdresse_postdistrikt ?? '') . $cvrResult->getPostalCode() ?? '';
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
 
@@ -109,7 +112,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
           $address .= ', ' . $cvrResult->getPostalCode() . ' ' . $cvrResult->getCity();
         }
 
-        $cvrResult->setAddress($address ?? '');
+        $cvrResult->setAddress($address);
       }
     }
     else {
