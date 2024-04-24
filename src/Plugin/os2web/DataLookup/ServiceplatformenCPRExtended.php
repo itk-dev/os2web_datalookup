@@ -3,6 +3,7 @@
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use DateTime;
+use DateTimeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
@@ -52,7 +53,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return array_merge(parent::defaultConfiguration(), [
       'test_mode_fixed_cpr' => '',
     ]);
@@ -61,7 +62,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildConfigurationForm($form, $form_state);
     $form['mode_fieldset']['test_mode_fixed_cpr'] = [
       '#type' => 'textfield',
@@ -85,7 +86,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::submitConfigurationForm($form, $form_state);
 
     if (!empty($form_state->getValue('test_cpr'))) {
@@ -106,7 +107,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * {@inheritDoc}
    */
-  public function lookup($cpr, $fetchChildren = TRUE, $allowCprTestModeReplace = TRUE) {
+  public function lookup(string $cpr, $fetchChildren = TRUE, $allowCprTestModeReplace = TRUE): CprLookupResult {
     if ($this->configuration['mode_selector'] == 1 && $this->configuration['test_mode_fixed_cpr']) {
       if ($allowCprTestModeReplace) {
         $cpr = $this->configuration['test_mode_fixed_cpr'];
@@ -123,7 +124,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
     $result = $this->query('PersonLookup', $request);
 
     $cprResult = new CprLookupResult();
-    // If all goes well we return address array.
+    // If all goes well, we return an address array.
     if ($result['status']) {
       $cprResult->setSuccessful();
       $cprResult->setCpr($cpr);
@@ -149,7 +150,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $cprResult->setCitizen(FALSE);
         }
 
-        $citizenshipDate = DateTime::createFromFormat(DateTime::RFC3339_EXTENDED, $persondata->statsborgerskab->statsborgerskabDato->dato);
+        $citizenshipDate = DateTime::createFromFormat(DateTimeInterface::RFC3339_EXTENDED, $persondata->statsborgerskab->statsborgerskabDato->dato);
         $cprResult->setCitizenshipDate($citizenshipDate);
       }
 

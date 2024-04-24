@@ -22,7 +22,7 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
    *
    * @var bool
    */
-  protected $isReady = TRUE;
+  protected bool $isReady = TRUE;
 
   /**
    * {@inheritdoc}
@@ -42,22 +42,23 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
   /**
    * {@inheritdoc}
    */
-  public function getConfiguration() {
+  public function getConfiguration(): array {
     return $this->configuration;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setConfiguration(array $configuration) {
+  public function setConfiguration(array $configuration): static {
     $this->configuration = $configuration + $this->defaultConfiguration();
+
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return [];
   }
 
@@ -71,21 +72,21 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
   /**
    * {@inheritdoc}
    */
-  public function getStatus() {
+  public function getStatus(): string {
     return 'N/A';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getGroup() {
+  public function getGroup(): string {
     return $this->pluginDefinition['group'];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isReady() {
+  public function isReady(): bool {
     return $this->isReady;
   }
 

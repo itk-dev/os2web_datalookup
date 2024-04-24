@@ -5,6 +5,7 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * DataLookupInterface plugin interface for providing some metadata inspection.
@@ -19,16 +20,16 @@ interface DataLookupInterface extends PluginInspectionInterface, PluginFormInter
   /**
    * Get plugin status.
    */
-  public function getStatus();
+  public function getStatus(): string;
 
   /**
-   * Get plugin group.
+   * Get a plugin group.
    */
-  public function getGroup();
+  public function getGroup(): string;
 
   /**
    * Get plugin readiness.
    */
-  public function isReady();
+  public function isReady(): bool;
 
 }

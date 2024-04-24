@@ -2,6 +2,8 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
+use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
+
 interface DataLookupInterfaceCompany extends DataLookupInterface {
 
   /**
@@ -13,6 +15,6 @@ interface DataLookupInterfaceCompany extends DataLookupInterface {
    * @return \Drupal\os2web_datalookup\LookupResult\CompanyLookupResult
    *   The company lookup Result.
    */
-  public function lookup($param);
+  public function lookup(string $param): CompanyLookupResult;
 
 }

@@ -22,7 +22,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return [
       'webserviceurl_live' => 'https://s5-certservices.datafordeler.dk/CVR/HentCVRData/1/REST/',
       'cert_path_live' => '',
@@ -33,7 +33,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildConfigurationForm($form, $form_state);
 
     $form['test_cvr'] = [
@@ -47,7 +47,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::submitConfigurationForm($form, $form_state);
 
     if (!empty($form_state->getValue('test_cvr'))) {
@@ -64,9 +64,9 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
   /**
    * {@inheritdoc}
    */
-  public function lookup($cvr) {
+  public function lookup(string $param): CompanyLookupResult {
     try {
-      $response = $this->httpClient->get('hentVirksomhedMedCVRNummer', ['query' => ['pCVRNummer' => $cvr]]);
+      $response = $this->httpClient->get('hentVirksomhedMedCVRNummer', ['query' => ['pCVRNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
@@ -76,7 +76,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
     $cvrResult = new CompanyLookupResult();
     if ($result && isset($result->virksomhed) && !empty((array) $result->virksomhed)) {
       $cvrResult->setSuccessful();
-      $cvrResult->setCvr($cvr);
+      $cvrResult->setCvr($param);
 
       if ($result->virksomhedsnavn) {
         $cvrResult->setName($result->virksomhedsnavn->vaerdi);

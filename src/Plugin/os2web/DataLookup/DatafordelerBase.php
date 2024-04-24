@@ -3,6 +3,7 @@
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use GuzzleHttp\Client;
 
 /**
@@ -11,11 +12,11 @@ use GuzzleHttp\Client;
 abstract class DatafordelerBase extends DataLookupBase {
 
   /**
-   * Plugin readiness flag.
+   * Http client.
    *
-   * @var bool
+   * @var Client
    */
-  protected $httpClient;
+  protected Client $httpClient;
 
   /**
    * {@inheritdoc}
@@ -28,7 +29,7 @@ abstract class DatafordelerBase extends DataLookupBase {
   /**
    * Plugin init method.
    */
-  private function init() {
+  private function init(): void {
     $this->isReady = FALSE;
 
     $configuration = $this->getConfiguration();
@@ -51,19 +52,19 @@ abstract class DatafordelerBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function getStatus() {
-    if ($this->httpClient) {
-      return $this->t('Plugin is ready to work');
+  public function getStatus(): string {
+    if (isset($this->httpClient)) {
+      return $this->t('Plugin is ready to work')->render();
     }
     else {
-      return $this->t('Configuration is not completed');
+      return $this->t('Configuration is not completed')->render();
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form['webserviceurl_live'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Webservice URL (LIVE)'),
@@ -91,7 +92,7 @@ abstract class DatafordelerBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     if ($form_state->getValue('cert_passphrase_live') == '') {
       $form_state->unsetValue('cert_passphrase_live');
     }
