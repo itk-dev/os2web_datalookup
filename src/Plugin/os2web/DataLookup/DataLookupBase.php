@@ -4,6 +4,7 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\os2web_audit\Service\Logger;
 
 /**
  * Provides a base class for image effects.
@@ -25,17 +26,30 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface 
   protected bool $isReady = TRUE;
 
   /**
+   * Audit logger.
+   *
+   * @var \Drupal\os2web_audit\Service\Logger
+   */
+  protected Logger $auditLogger;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    Logger $auditLogger,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->auditLogger = $auditLogger;
     $this->setConfiguration($configuration);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function label() {
+  public function label(): string {
     return $this->pluginDefinition['label'];
   }
 

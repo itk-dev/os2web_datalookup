@@ -7,6 +7,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
 use GuzzleHttp\Exception\ClientException;
+use function Symfony\Component\String\s;
 
 /**
  * Defines a plugin for DatafordelerPNumber.
@@ -66,13 +67,14 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfac
    */
   public function lookup(string $param): CompanyLookupResult {
     try {
-      os2forms_audit_log('DataLookup', time(), 'Hent produktionsenhed med PNummer: ' . $param, TRUE);
+      $msg = sprintf('Hent produktionsenhed med PNummer: ', $param);
+      $this->auditLogger->info('DataLookup', $msg);
       $response = $this->httpClient->get('hentProduktionsenhedMedPNummer', ['query' => ['ppNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
       $msg = sprintf('Hent produktionsenhed med PNummer (%s): %s', $param, $e->getMessage());
-      os2forms_audit_log('DataLookup', time(), $msg, TRUE, ['error' => TRUE]);
+      $this->auditLogger->error('DataLookup', $msg);
       $result = $e->getMessage();
     }
 

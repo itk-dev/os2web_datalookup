@@ -66,13 +66,14 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
    */
   public function lookup(string $param): CompanyLookupResult {
     try {
-      os2forms_audit_log('DataLookup', time(), 'Hent virksomhed med CVRNummer: ' . $param, TRUE);
+      $msg = sprintf('Hent virksomhed med CVRNummer: %s', $param);
+      $this->auditLogger->info('DataLookup', $msg);
       $response = $this->httpClient->get('hentVirksomhedMedCVRNummer', ['query' => ['pCVRNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
     }
     catch (ClientException $e) {
       $msg = sprintf('Hent virksomhed med CVRNummer (%s): %s', $param, $e->getMessage());
-      os2forms_audit_log('DataLookup', time(), $msg, TRUE, ['error' => TRUE]);
+      $this->auditLogger->error('DataLookup', $msg);
       $result = $e->getMessage();
     }
 
