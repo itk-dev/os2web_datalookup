@@ -1,14 +1,24 @@
 {
     "name": "os2web/os2web_datalookup",
-    "type": "drupal-module",
     "description": "Provides integration with Danish data lookup services such as Service platformen or Datafordeler.",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "license": "EUPL-1.2",
+    "type": "drupal-module",
+    "require": {
+        "ext-soap": "*",
+        "os2web/os2web_key": "dev-os2web_key"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "drupal/coder": "*",
+        "ergebnis/composer-normalize": "^2.42",
+        "mglaman/phpstan-drupal": "*",
+        "phpstan/extension-installer": "*",
+        "phpstan/phpstan-deprecation-rules": "*"
+    },
     "repositories": {
         "os2web/os2web_key": {
             "type": "vcs",
-            "url": "https://github.com/rimi-itk/os2web_key"
+            "url": "https://github.com/itk-dev/os2web_key"
         },
         "drupal": {
             "type": "composer",
@@ -19,40 +29,32 @@
             "url": "https://asset-packagist.org"
         }
     },
-    "require": {
-        "ext-soap": "*",
-        "os2web/os2web_key": "dev-os2web_key"
-    },
-    "require-dev": {
-        "dealerdirect/phpcodesniffer-composer-installer": "*",
-        "drupal/coder": "*",
-        "mglaman/phpstan-drupal": "*",
-        "phpstan/extension-installer": "*",
-        "phpstan/phpstan-deprecation-rules": "*"
-    },
-    "scripts": {
-        "coding-standards-check/phpcs": [
-            "phpcs --standard=phpcs.xml.dist"
-        ],
-        "coding-standards-check": [
-            "@coding-standards-check/phpcs"
-        ],
-        "coding-standards-apply/phpcs": [
-            "phpcbf --standard=phpcs.xml.dist"
-        ],
-        "coding-standards-apply": [
-            "@coding-standards-apply/phpcs"
-        ]
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
             "phpstan/extension-installer": true,
             "simplesamlphp/composer-module-installer": true,
             "vaimo/composer-patches": true,
             "zaporylie/composer-drupal-optimizations": true
-        }
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "coding-standards-apply": [
+            "@coding-standards-apply/phpcs"
+        ],
+        "coding-standards-apply/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-check": [
+            "@coding-standards-check/phpcs"
+        ],
+        "coding-standards-check/phpcs": [
+            "phpcs --standard=phpcs.xml.dist"
+        ]
     }
 }
