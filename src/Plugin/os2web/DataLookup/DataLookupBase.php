@@ -44,20 +44,25 @@ abstract class DataLookupBase extends PluginBase implements ContainerFactoryPlug
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition,
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
     protected KeyRepositoryInterface $keyRepository,
-    protected FileSystem $fileSystem
+    protected FileSystem $fileSystem,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->setConfiguration($configuration);
     $this->init();
   }
 
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
-  {
-    /** @var KeyRepositoryInterface $keyRepository */
+  /**
+   *
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    /** @var \Drupal\key\KeyRepositoryInterface $keyRepository */
     $keyRepository = $container->get('key.repository');
-    /** @var FileSystem $fileSystem */
+    /** @var \Drupal\Core\File\FileSystem $fileSystem */
     $fileSystem = $container->get('file_system');
 
     return new static(
@@ -72,11 +77,10 @@ abstract class DataLookupBase extends PluginBase implements ContainerFactoryPlug
   /**
    * Plugin init method.
    */
-  protected function init()
-  {
+  protected function init() {
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public function label() {
@@ -152,7 +156,7 @@ abstract class DataLookupBase extends PluginBase implements ContainerFactoryPlug
    *   The local certificate path.
    */
   protected function createLocalCertPath(): string {
-    $this->localCertPath = $this->fileSystem->getTempDirectory().'/'.uniqid('os2web_datalookup_local_cert_');
+    $this->localCertPath = $this->fileSystem->getTempDirectory() . '/' . uniqid('os2web_datalookup_local_cert_');
 
     return $this->localCertPath;
   }
@@ -161,10 +165,9 @@ abstract class DataLookupBase extends PluginBase implements ContainerFactoryPlug
    * Write certificate to temporary certificate file.
    *
    * @return string
-   *    The local certificate path.
+   *   The local certificate path.
    */
-  protected function writeCertificateToFile(): string
-  {
+  protected function writeCertificateToFile(): string {
     // Write certificate to local_cert location.
     $certificate = $this->getCertificate();
     $localCertPath = $this->localCertPath;

@@ -2,9 +2,7 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
-use Drupal\Core\File\FileSystem;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\key\KeyRepositoryInterface;
 use Drupal\os2web_datalookup\Exception\RuntimeException;
 
 /**
@@ -31,19 +29,19 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    */
   public function defaultConfiguration() {
     return [
-        'mode_selector' => 0,
-        'serviceagreementuuid' => '',
-        'serviceuuid' => '',
-        'wsdl' => '',
-        'location' => '',
-        'location_test' => '',
-        'usersystemuuid' => '',
-        'useruuid' => '',
-        'accountinginfo' => '',
-        'certfile_passphrase' => '',
-        'certfile' => '',
-        'certfile_test' => '',
-      ] + parent::defaultConfiguration();
+      'mode_selector' => 0,
+      'serviceagreementuuid' => '',
+      'serviceuuid' => '',
+      'wsdl' => '',
+      'location' => '',
+      'location_test' => '',
+      'usersystemuuid' => '',
+      'useruuid' => '',
+      'accountinginfo' => '',
+      'certfile_passphrase' => '',
+      'certfile' => '',
+      'certfile_test' => '',
+    ] + parent::defaultConfiguration();
   }
 
   /**

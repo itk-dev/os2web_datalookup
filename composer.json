@@ -5,10 +5,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "license": "EUPL-1.2",
-    "require": {
-        "ext-soap": "*",
-        "os2web/os2web_key": "dev-os2web_key"
-    },
     "repositories": {
         "os2web/os2web_key": {
             "type": "vcs",
@@ -21,6 +17,42 @@
         "assets": {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        }
+    },
+    "require": {
+        "ext-soap": "*",
+        "os2web/os2web_key": "dev-os2web_key"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "drupal/coder": "*",
+        "mglaman/phpstan-drupal": "*",
+        "phpstan/extension-installer": "*",
+        "phpstan/phpstan-deprecation-rules": "*"
+    },
+    "scripts": {
+        "coding-standards-check/phpcs": [
+            "phpcs --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-check": [
+            "@coding-standards-check/phpcs"
+        ],
+        "coding-standards-apply/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-apply": [
+            "@coding-standards-apply/phpcs"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true,
+            "simplesamlphp/composer-module-installer": true,
+            "vaimo/composer-patches": true,
+            "zaporylie/composer-drupal-optimizations": true
         }
     }
 }

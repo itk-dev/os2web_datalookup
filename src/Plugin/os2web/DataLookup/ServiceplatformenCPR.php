@@ -23,8 +23,8 @@ class ServiceplatformenCPR extends ServiceplatformenBase implements DataLookupIn
    */
   public function defaultConfiguration() {
     return [
-        'test_mode_fixed_cpr' => '',
-      ] + parent::defaultConfiguration();
+      'test_mode_fixed_cpr' => '',
+    ] + parent::defaultConfiguration();
   }
 
   /**

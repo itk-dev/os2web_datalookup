@@ -55,7 +55,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   public function defaultConfiguration() {
     return [
       'test_mode_fixed_cpr' => '',
-      ] + parent::defaultConfiguration();
+    ] + parent::defaultConfiguration();
   }
 
   /**
