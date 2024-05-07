@@ -7,7 +7,6 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
 use GuzzleHttp\Exception\ClientException;
-use function Symfony\Component\String\s;
 
 /**
  * Defines a plugin for DatafordelerPNumber.
@@ -18,7 +17,7 @@ use function Symfony\Component\String\s;
  *   group = "pnumber_lookup"
  * )
  */
-class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfaceCompany {
+class DatafordelerPNumber extends DatafordelerBase implements DataLookupCompanyInterface {
 
   /**
    * {@inheritdoc}
@@ -95,7 +94,10 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupInterfac
         $cvrResult->setFloor($address->CVRAdresse_etagebetegnelse ?? '');
         $cvrResult->setApartmentNr($address->CVRAdresse_doerbetegnelse ?? '');
         $cvrResult->setPostalCode($address->CVRAdresse_postnummer ?? '');
-        $city = ($address->CVRAdresse_postdistrikt ?? '') . $cvrResult->getPostalCode() ?? '';
+        $city = implode(' ', array_filter([
+          $address->CVRAdresse_postdistrikt ?? NULL,
+          $cvrResult->getPostalCode() ?? NULL,
+        ]);
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
         $address = $cvrResult->getStreet() . ' ' . $cvrResult->getHouseNr() . ' ' . $cvrResult->getFloor() . $cvrResult->getApartmentNr();

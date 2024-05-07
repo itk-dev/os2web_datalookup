@@ -16,7 +16,7 @@ use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
  *   group = "cvr_lookup"
  * )
  */
-class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupInterfaceCompany {
+class ServiceplatformenCVR extends ServiceplatformenBase implements DataLookupCompanyInterface {
 
   /**
    * {@inheritdoc}

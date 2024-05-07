@@ -14,7 +14,7 @@ abstract class DatafordelerBase extends DataLookupBase {
   /**
    * Http client.
    *
-   * @var Client
+   * @var \GuzzleHttp\Client
    */
   protected Client $httpClient;
 

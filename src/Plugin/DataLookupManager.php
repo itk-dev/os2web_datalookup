@@ -2,10 +2,10 @@
 
 namespace Drupal\os2web_datalookup\Plugin;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\os2web_datalookup\Form\DataLookupPluginGroupSettingsForm;
 use Drupal\os2web_datalookup\Form\DataLookupPluginSettingsForm;
 
@@ -58,6 +58,7 @@ class DataLookupManager extends DefaultPluginManager {
     // Hard switch to another plugin fallback - see
     // https://os2web.atlassian.net/browse/OS2FORMS-359.
     if ($plugin_id == 'serviceplatformen_cpr') {
+      // phpcs:ignore
       \Drupal::logger('os2web_datalookup')->warning('"Serviceplatformen CPR (SF6008)" is obsolete and will be phased out. Automatically switched to "Serviceplatformen CPR - extended (SF1520)"');
       $plugin_id = 'serviceplatformen_cpr_extended';
     }
@@ -89,14 +90,14 @@ class DataLookupManager extends DefaultPluginManager {
   /**
    * Gets the definition of all plugins for this type based on group.
    *
-   * @param $group_id
+   * @param string $group_id
    *   Group id.
    *
    * @return array
    *   An array of plugin definitions (empty array if no definitions were
    *   found). Keys are plugin IDs.
    */
-  public function getDefinitionsByGroup($group_id): array {
+  public function getDefinitionsByGroup(string $group_id): array {
     $definitions = [];
     foreach ($this->getDefinitions() as $id => $plugin_definition) {
       if ($plugin_definition['group'] == $group_id) {
@@ -126,15 +127,16 @@ class DataLookupManager extends DefaultPluginManager {
   }
 
   /**
-   * Returns the group default plugin
+   * Returns the group default plugin.
    *
-   * @param $group_id
+   * @param string $group_id
    *   Group ID.
    *
    * @return string|null
    *   Plugin ID or NULL is not set.
    */
-  public function getGroupDefaultPlugin($group_id): ?string {
+  public function getGroupDefaultPlugin(string $group_id): ?string {
+    // phpcs:ignore
     $config = \Drupal::config(DataLookupPluginGroupSettingsForm::$configName);
 
     return $config->get("$group_id.default_plugin");

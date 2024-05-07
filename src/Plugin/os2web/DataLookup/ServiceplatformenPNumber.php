@@ -16,7 +16,7 @@ use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
  *   group = "pnumber_lookup"
  * )
  */
-class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLookupInterfaceCompany {
+class ServiceplatformenPNumber extends ServiceplatformenBase implements DataLookupCompanyInterface {
 
   /**
    * {@inheritdoc}

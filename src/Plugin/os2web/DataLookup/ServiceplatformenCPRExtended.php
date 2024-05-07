@@ -2,8 +2,6 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
-use DateTime;
-use DateTimeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Markup;
@@ -18,7 +16,7 @@ use Drupal\os2web_datalookup\LookupResult\CprLookupResult;
  *   group = "cpr_lookup"
  * )
  */
-class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupInterfaceCpr {
+class ServiceplatformenCPRExtended extends ServiceplatformenBase implements DataLookupCprInterface {
 
   /**
    * Status = DEAD.
@@ -70,7 +68,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       '#default_value' => $this->configuration['test_mode_fixed_cpr'],
       '#description' => $this->t('Fixed CPR that will be used for all requests to the serviceplatformen instead of the provided CPR.'),
       '#states' => [
-        // Hide the settings when the cancel notify checkbox is disabled.
+        // Show the element only when running in test mode.
         'visible' => [
           'input[name="mode_selector"]' => ['value' => 1],
         ],
@@ -150,7 +148,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           $cprResult->setCitizen(FALSE);
         }
 
-        $citizenshipDate = DateTime::createFromFormat(DateTimeInterface::RFC3339_EXTENDED, $persondata->statsborgerskab->statsborgerskabDato->dato);
+        $citizenshipDate = \DateTime::createFromFormat(\DateTimeInterface::RFC3339_EXTENDED, $persondata->statsborgerskab->statsborgerskabDato->dato);
         $cprResult->setCitizenshipDate($citizenshipDate);
       }
 
@@ -159,7 +157,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       if ($persondata->foedselsdato) {
-        $birthDate = DateTime::createFromFormat("Y-m-dP", $persondata->foedselsdato->dato);
+        $birthDate = \DateTime::createFromFormat("Y-m-dP", $persondata->foedselsdato->dato);
         $cprResult->setBirthDate($birthDate);
       }
 

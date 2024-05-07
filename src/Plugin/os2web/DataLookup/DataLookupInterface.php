@@ -5,7 +5,6 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * DataLookupInterface plugin interface for providing some metadata inspection.

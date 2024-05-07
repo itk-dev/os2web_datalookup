@@ -17,7 +17,7 @@ use GuzzleHttp\Exception\ClientException;
  *   group = "cvr_lookup"
  * )
  */
-class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCompany {
+class DatafordelerCVR extends DatafordelerBase implements DataLookupCompanyInterface {
 
   /**
    * {@inheritdoc}
@@ -94,7 +94,10 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupInterfaceCom
         $cvrResult->setFloor($address->CVRAdresse_etagebetegnelse ?? '');
         $cvrResult->setApartmentNr($address->CVRAdresse_doerbetegnelse ?? '');
         $cvrResult->setPostalCode($address->CVRAdresse_postnummer ?? '');
-        $city = ($address->CVRAdresse_postdistrikt ?? '') . $cvrResult->getPostalCode() ?? '';
+        $city = implode(' ', array_filter([
+          $address->CVRAdresse_postdistrikt ?? NULL,
+          $cvrResult->getPostalCode() ?? NULL,
+        ]);
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
 

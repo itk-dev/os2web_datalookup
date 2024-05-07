@@ -4,7 +4,15 @@ namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use Drupal\os2web_datalookup\LookupResult\CompanyLookupResult;
 
-interface DataLookupInterfaceCompany extends DataLookupInterface {
+/**
+ * DataLookupInterfaceCompany plugin interface.
+ *
+ * This interface provides some simple tools for code receiving a plugin to
+ * interact with the plugin system.
+ *
+ * @ingroup plugin_api
+ */
+interface DataLookupCompanyInterface extends DataLookupInterface {
 
   /**
    * Performs lookup for the provided param.
