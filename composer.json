@@ -45,5 +45,11 @@
         "coding-standards-apply": [
             "@coding-standards-apply/phpcs"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
     }
 }
