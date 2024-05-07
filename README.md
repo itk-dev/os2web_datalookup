@@ -12,6 +12,7 @@ drush en os2web_datalookup
 ```
 
 ## Update
+
 Updating process for OS2Web Data lookup module is similar to the usual Drupal 8
 module. Use Composer's built-in command for listing packages that have updates
 available:
