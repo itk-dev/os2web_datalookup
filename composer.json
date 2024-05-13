@@ -5,7 +5,7 @@
     "type": "drupal-module",
     "require": {
         "ext-soap": "*",
-        "os2web/os2web_key": "dev-os2web_key"
+        "os2web/os2web_key": "^1.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "*",
@@ -16,10 +16,6 @@
         "phpstan/phpstan-deprecation-rules": "*"
     },
     "repositories": {
-        "os2web/os2web_key": {
-            "type": "vcs",
-            "url": "https://github.com/itk-dev/os2web_key"
-        },
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
