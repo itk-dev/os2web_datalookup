@@ -32,12 +32,12 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
   /**
    * Guardian other 1.
    */
-  const GUARDIAN_OTHER_1 = 1;
+  const GUARDIAN_OTHER_1 = 5;
 
   /**
    * Guardian other 2.
    */
-  const GUARDIAN_OTHER_2 = 1;
+  const GUARDIAN_OTHER_2 = 6;
 
   /**
    * Guardian mother 3.
@@ -251,7 +251,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
           elseif ($relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_OTHER_1 || $relationshipGuardian->foraeldremyndighedtype == self::GUARDIAN_OTHER_2) {
             $guardian = [
               'type' => $relationshipGuardian->foraeldremyndighedtype,
-              'cpr' => $relationshipGuardian->relationCpr,
+              'cpr' => $relationshipGuardian->relationPersonnummer,
             ];
 
             $guardians[] = $guardian;
