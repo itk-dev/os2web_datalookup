@@ -140,6 +140,8 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
       }
 
       if ($persondata->statsborgerskab) {
+        $cprResult->setCitizenshipCode($persondata->statsborgerskab->landekode);
+
         if ($persondata->statsborgerskab->landekode == self::DENMARK_COUNTRY_CODE) {
           $cprResult->setCitizen(TRUE);
         }

@@ -157,6 +157,13 @@ class CprLookupResult {
   protected \DateTime $citizenshipDate;
 
   /**
+   * Citizenship country code.
+   *
+   * @var int
+   */
+  protected $citizenshipCountryCode;
+
+  /**
    * Date of birth.
    *
    * @var \DateTime
@@ -483,6 +490,20 @@ class CprLookupResult {
    */
   public function setCitizenshipDate(\DateTime $citizenshipDate): void {
     $this->citizenshipDate = $citizenshipDate;
+  }
+
+  /**
+   * @return int
+   */
+  public function getCitizenshipCountryCode(): int {
+    return $this->citizenshipCountryCode;
+  }
+
+  /**
+   * @param int $citizenshipCountryCode
+   */
+  public function setCitizenshipCountryCode(int $citizenshipCountryCode): void {
+    $this->citizenshipCountryCode = $citizenshipCountryCode;
   }
 
   /**
