@@ -97,7 +97,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupCompanyInter
         $city = implode(' ', array_filter([
           $address->CVRAdresse_postdistrikt ?? NULL,
           $cvrResult->getPostalCode() ?? NULL,
-        ]);
+        ]));
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
 
