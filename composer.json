@@ -22,7 +22,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "drupal/coder": "^8.3",
         "phpunit/phpunit": "^9.5",
-        "os2web/os2web_audit": "^0.0.2"
+        "os2web/os2web_audit": "^0.0.3"
     },
     "scripts": {
         "coding-standards-check/phpcs": [
