@@ -3,6 +3,7 @@
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os2web_audit\Service\Logger;
 
 /**
  * Defines base plugin class for Serviceplatformen plugins.
@@ -26,8 +27,13 @@ abstract class ServiceplatformenBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    Logger $auditLogger,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $auditLogger);
     $this->init();
   }
 
