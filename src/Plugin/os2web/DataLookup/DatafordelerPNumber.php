@@ -66,7 +66,7 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupCompanyI
    */
   public function lookup(string $param): CompanyLookupResult {
     try {
-      $msg = sprintf('Hent produktionsenhed med PNummer: ', $param);
+      $msg = sprintf('Hent produktionsenhed med PNummer: %s', $param);
       $this->auditLogger->info('DataLookup', $msg);
       $response = $this->httpClient->get('hentProduktionsenhedMedPNummer', ['query' => ['ppNummer' => $param]]);
       $result = json_decode((string) $response->getBody());
@@ -97,7 +97,7 @@ class DatafordelerPNumber extends DatafordelerBase implements DataLookupCompanyI
         $city = implode(' ', array_filter([
           $address->CVRAdresse_postdistrikt ?? NULL,
           $cvrResult->getPostalCode() ?? NULL,
-        ]);
+        ]));
         $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
         $address = $cvrResult->getStreet() . ' ' . $cvrResult->getHouseNr() . ' ' . $cvrResult->getFloor() . $cvrResult->getApartmentNr();

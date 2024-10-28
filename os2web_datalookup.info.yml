@@ -4,4 +4,4 @@ description: 'Provides integration with Danish data lookup services such as Serv
 package: 'OS2web'
 core_version_requirement: ^8 || ^9 || ^10
 dependencies:
-  - 'os2web/os2web_audit'
+  - 'os2web:os2web_audit'
