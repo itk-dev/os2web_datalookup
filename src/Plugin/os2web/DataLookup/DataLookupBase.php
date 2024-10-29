@@ -2,10 +2,11 @@
 
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
-use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\os2web_audit\Service\Logger;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a base class for image effects.
@@ -17,7 +18,7 @@ use Drupal\os2web_audit\Service\Logger;
  * @see \Drupal\image\ImageEffectManager
  * @see plugin_api
  */
-abstract class DataLookupBase extends PluginBase implements DataLookupInterface {
+abstract class DataLookupBase extends PluginBase implements DataLookupInterface, ContainerFactoryPluginInterface {
 
   /**
    * Plugin readiness flag.
