@@ -3,6 +3,7 @@
 namespace Drupal\os2web_datalookup\Plugin\os2web\DataLookup;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os2web_audit\Service\Logger;
 
 /**
  * Defines base plugin class for Serviceplatformen plugins.
@@ -14,27 +15,32 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    *
    * @var string
    */
-  protected $status;
+  protected string $status;
 
   /**
    * Service object.
    *
    * @var \SoapClient
    */
-  protected $client;
+  protected \SoapClient $client;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    Logger $auditLogger,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $auditLogger);
     $this->init();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return [
       'mode_selector' => 0,
       'serviceagreementuuid' => '',
@@ -54,7 +60,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form['mode_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Mode'),
@@ -143,7 +149,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     if ($form_state->getValue('certfile_passphrase') == '') {
       $form_state->unsetValue('certfile_passphrase');
     }
@@ -159,14 +165,14 @@ abstract class ServiceplatformenBase extends DataLookupBase {
   /**
    * {@inheritdoc}
    */
-  public function getStatus() {
+  public function getStatus(): string {
     return $this->status;
   }
 
   /**
    * Plugin init method.
    */
-  private function init() {
+  private function init(): void {
     ini_set('soap.wsdl_cache_enabled', 0);
     ini_set('soap.wsdl_cache_ttl', 0);
     $this->status = $this->t('Plugin is ready to work')->__toString();
@@ -193,6 +199,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
         'certfile_test',
       ],
     ];
+
     $this->isReady = TRUE;
     foreach ($required_configuration[$this->configuration['mode_selector']] as $key) {
       if (empty($this->configuration[$key])) {
@@ -235,7 +242,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    * @return string
    *   WSDL URL.
    */
-  protected function getWsdlUrl() {
+  protected function getWsdlUrl(): string {
     $url = $this->configuration['wsdl'];
     // Anything that's not an absolute path or url will be resolved relative to
     // the location of the os2web_datalookup module.
@@ -254,8 +261,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    * @return array
    *   Prepared request with general info.
    */
-  protected function prepareRequest() {
-    /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+  protected function prepareRequest(): array {
     $user = \Drupal::currentUser();
     return [
       'InvocationContext' => [
@@ -280,7 +286,7 @@ abstract class ServiceplatformenBase extends DataLookupBase {
    * @return array
    *   Method response or FALSE.
    */
-  protected function query($method, array $request) {
+  protected function query(string $method, array $request): array {
     if (!$this->isReady()) {
       return [
         'status' => FALSE,
@@ -289,10 +295,14 @@ abstract class ServiceplatformenBase extends DataLookupBase {
     }
 
     try {
+      $msg = sprintf('Method %s called with (%s)', $method, implode(', ', $request));
+      $this->auditLogger->info('DataLookup', $msg);
       $response = (array) $this->client->$method($request);
       $response['status'] = TRUE;
     }
     catch (\SoapFault $e) {
+      $msg = sprintf('Method %s called with (%s): %s', $method, implode(', ', $request), $e->faultstring);
+      $this->auditLogger->error('DataLookup', $msg);
       $response = [
         'status' => FALSE,
         'error' => $e->faultstring,

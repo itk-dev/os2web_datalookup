@@ -17,5 +17,30 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "drupal/coder": "^8.3",
+        "phpunit/phpunit": "^9.5",
+        "os2web/os2web_audit": "^0.1"
+    },
+    "scripts": {
+        "coding-standards-check/phpcs": [
+            "phpcs --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-check": [
+            "@coding-standards-check/phpcs"
+        ],
+        "coding-standards-apply/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-apply": [
+            "@coding-standards-apply/phpcs"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
