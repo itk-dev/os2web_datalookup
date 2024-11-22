@@ -294,14 +294,28 @@ abstract class ServiceplatformenBase extends DataLookupBase {
       ];
     }
 
+    // Prepare request data for logging.
+    if (in_array($method, ['callCPRBasicInformationService', 'PersonLookup'])) {
+      $auditLoggingMethodParameter = 'PNR, ' . $request['PNR'] ?? '';
+    }
+    elseif ($method === 'getLegalUnit') {
+      $auditLoggingMethodParameter = 'LegalUnitIdentifier, ' . $request['GetLegalUnitRequest']['LegalUnitIdentifier'] ?? '';
+    }
+    elseif ($method === 'getProductionUnit') {
+      $auditLoggingMethodParameter = 'ProductionUnitIdentifier, ' . $request['GetProductionUnitRequest']['ProductionUnitIdentifier'] ?? '';
+    }
+    else {
+      $auditLoggingMethodParameter = sprintf('Unhandled method: %s', $method);
+    }
+
     try {
-      $msg = sprintf('Method %s called with (%s)', $method, implode(', ', $request));
+      $msg = sprintf('Method %s called with (%s)', $method, $auditLoggingMethodParameter);
       $this->auditLogger->info('DataLookup', $msg);
       $response = (array) $this->client->$method($request);
       $response['status'] = TRUE;
     }
     catch (\SoapFault $e) {
-      $msg = sprintf('Method %s called with (%s): %s', $method, implode(', ', $request), $e->faultstring);
+      $msg = sprintf('Method %s called with (%s): %s', $method, $auditLoggingMethodParameter, $e->faultstring);
       $this->auditLogger->error('DataLookup', $msg);
       $response = [
         'status' => FALSE,
