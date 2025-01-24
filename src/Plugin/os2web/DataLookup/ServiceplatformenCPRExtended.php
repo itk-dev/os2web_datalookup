@@ -156,7 +156,7 @@ class ServiceplatformenCPRExtended extends ServiceplatformenBase implements Data
         $cprResult->setName($persondata->navn->personadresseringsnavn ?? '');
       }
 
-      if ($persondata->foedselsdato) {
+      if (isset($persondata->foedselsdato)) {
         $birthDate = \DateTime::createFromFormat("Y-m-dP", $persondata->foedselsdato->dato);
         $cprResult->setBirthDate($birthDate);
       }
