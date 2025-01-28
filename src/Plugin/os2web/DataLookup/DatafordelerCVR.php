@@ -95,7 +95,7 @@ class DatafordelerCVR extends DatafordelerBase implements DataLookupCompanyInter
         $cvrResult->setApartmentNr($address->CVRAdresse_doerbetegnelse ?? '');
         $cvrResult->setPostalCode($address->CVRAdresse_postnummer ?? '');
         $city = $address->CVRAdresse_postdistrikt ?? $cvrResult->getPostalCode();
-	$cvrResult->setCity($city);
+        $cvrResult->setCity($city);
         $cvrResult->setMunicipalityCode($address->CVRAdresse_kommunekode ?? '');
 
         // Composing full address in one line.
