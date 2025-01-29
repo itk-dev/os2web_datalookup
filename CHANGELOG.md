@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Ensure postal code is only added to city if `CVRAdresse_postdistrikt` is not set.
 * Added missing use statement to fix issue on datafordeler settings pages
   `pnumber_lookup`, `cvr_lookup` and `cpr_lookup`.
 
