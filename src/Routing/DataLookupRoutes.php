@@ -5,6 +5,7 @@ namespace Drupal\os2web_datalookup\Routing;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\os2web_datalookup\Form\DataLookupPluginGroupSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
