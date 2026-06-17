@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.1] - 2026-06-17
+  Fixing Datafordeler "Remove place name" functionality
+
 ## [3.3.0] - 2026-06-08
 
 * [PR-33](https://github.com/OS2web/os2web_datalookup/pull/33) 
