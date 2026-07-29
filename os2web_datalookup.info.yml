@@ -2,7 +2,7 @@ name: 'OS2Web datalookup'
 type: module
 description: 'Provides integration with Danish data lookup services such as Service platformen or Datafordeler.'
 package: 'OS2web'
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 
 dependencies:
   - 'os2web:os2web_audit'
