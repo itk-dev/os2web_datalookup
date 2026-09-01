@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [PR-22](https://github.com/OS2web/os2web_datalookup/pull/22)
   Set actual identifier from lookup on lookup result
 
+## [3.4.1] - 2026-08-14
+  Drupal 11 compatibility fixes
+
+## [3.4.0] - 2026-07-29
+  Drupal 11 compatibility
+
+## [3.3.1] - 2026-06-17
+  Fixing Datafordeler "Remove place name" functionality
+
 ## [3.3.0] - 2026-06-08
 
 * [PR-33](https://github.com/OS2web/os2web_datalookup/pull/33) 

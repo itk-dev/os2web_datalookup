@@ -105,8 +105,10 @@ class DatafordelerAddressLookup extends DataLookupBase implements DatafordelerAd
           $addressId = $entry['id'];
 
           $address = $this->fetchAddressLookupResult($addressId);
-          if ($supplerendebynavn = $address->getSupplementaryCity()) {
-            $entry['titel'] = preg_replace("/$supplerendebynavn,/", '', $entry['titel']);
+          if ($address->isSuccessful()) {
+            if ($supplerendebynavn = $address->getSupplementaryCity()) {
+              $entry['titel'] = preg_replace("/$supplerendebynavn,/", '', $entry['titel']);
+            }
           }
         }
       }
