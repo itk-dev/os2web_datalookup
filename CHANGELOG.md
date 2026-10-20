@@ -10,6 +10,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [PR-31](https://github.com/OS2web/os2web_datalookup/pull/31)
   Fetch first, middle and last name in CPR Lookup.
 
+## [3.4.2] - 2026-09-25
+
+- Handling empty matrikula params
+
+## [3.4.1] - 2026-08-14
+  Drupal 11 compatibility fixes
+
+## [3.4.0] - 2026-07-29
+  Drupal 11 compatibility
+
+## [3.3.1] - 2026-06-17
+  Fixing Datafordeler "Remove place name" functionality
+
+## [3.3.0] - 2026-06-08
+
+* [PR-33](https://github.com/OS2web/os2web_datalookup/pull/33) 
+  Adding Datafordeler P-number lookup
+
+## [3.2.0] - 2026-05-29
+
+* [PR-32](https://github.com/OS2web/os2web_datalookup/pull/32)
+  Adding Datafordeler address lookup
+
 ## [3.1.0] - 2026-04-27
 
 * [PR-29](https://github.com/OS2web/os2web_datalookup/pull/29)

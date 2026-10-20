@@ -36,7 +36,7 @@ abstract class DataLookupBase extends PluginBase implements DataLookupInterface,
    *
    * @var string
    */
-  private string $localCertPath;
+  protected string $localCertPath;
 
   /**
    * Plugin readiness flag.
